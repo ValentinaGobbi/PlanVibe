@@ -168,7 +168,7 @@
       </section>
 
       <!-- TAB 2: AGGIUNGI RAPIDO -->
-      <section id="tab-add" class="tab-content hidden space-y-4">
+      <section id="tab-add" class="tab-content hidden space-y-4 pb-12">
         <div class="bg-gradient-to-b from-purple-50/50 to-pink-50/20 rounded-3xl p-5 border border-purple-100">
           <h3 class="text-lg font-extrabold text-slate-800 mb-4 flex items-center gap-2">
             <i data-lucide="plus-circle" class="text-pink-400"></i> Pianifica Attività
@@ -180,13 +180,14 @@
               <input type="date" id="add-date" required class="w-full px-4 py-3 bg-white border border-purple-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium">
             </div>
 
-            <div class="grid grid-cols-3 gap-2">
-              <div class="col-span-2">
+            <!-- Layout in colonna ottimizzato per smartphone per evitare compressioni del selettore orario -->
+            <div class="space-y-4">
+              <div>
                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Cosa farai?</label>
                 <input type="text" id="add-title" placeholder="Es. Allenamento gambe" required class="w-full px-4 py-3 bg-white border border-purple-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium">
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Ora (opz)</label>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Ora (opzionale)</label>
                 <input type="time" id="add-time" class="w-full px-4 py-3 bg-white border border-purple-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium">
               </div>
             </div>
@@ -313,10 +314,11 @@
 
     <!-- DETTAGLIO GIORNO MODAL (SLIDE UP) -->
     <div id="day-modal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 flex items-end justify-center">
-      <div id="day-modal-content" class="w-full max-w-md bg-white rounded-t-[2.5rem] shadow-2xl p-6 transform translate-y-full transition-transform duration-300 max-h-[85vh] flex flex-col">
+      <!-- day-modal-content impostato a max-h-[90vh] e overflow-y-auto per dare spazio di scorrimento completo se la tastiera si attiva -->
+      <div id="day-modal-content" class="w-full max-w-md bg-white rounded-t-[2.5rem] shadow-2xl p-6 transform translate-y-full transition-transform duration-300 max-h-[90vh] flex flex-col overflow-y-auto">
         
         <!-- Intestazione Modal -->
-        <div class="flex justify-between items-center pb-4 border-b border-purple-50">
+        <div class="flex justify-between items-center pb-4 border-b border-purple-50 shrink-0">
           <div>
             <span id="modal-day-badge" class="text-[10px] bg-purple-100 text-purple-700 font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Lunedì</span>
             <h3 id="modal-date-title" class="text-xl font-extrabold text-slate-800 mt-1">15 Giugno 2026</h3>
@@ -326,22 +328,22 @@
           </button>
         </div>
 
-        <!-- Lista Attività del giorno -->
-        <div class="flex-1 overflow-y-auto py-4 space-y-3" id="modal-activities-list">
+        <!-- Lista Attività del giorno con altezza minima garantita -->
+        <div class="flex-1 overflow-y-auto py-4 space-y-3 min-h-[120px]" id="modal-activities-list">
           <!-- Riempito via JS -->
         </div>
 
-        <!-- Sezione Aggiunta rapida dentro il Modal -->
-        <div class="pt-4 border-t border-purple-50 bg-white">
+        <!-- Sezione Aggiunta rapida dentro il Modal (Aggiunto padding bottom extra pb-6 per comandi smartphone) -->
+        <div class="pt-4 border-t border-purple-50 bg-white shrink-0 pb-6">
           <button onclick="toggleModalAddForm()" id="btn-toggle-modal-add" class="w-full bg-purple-50/50 hover:bg-purple-50 border border-purple-100 border-dashed text-purple-600 text-xs font-bold py-3 rounded-2xl flex justify-center items-center gap-1.5 transition active:scale-95">
             <i data-lucide="plus" class="w-4 h-4"></i> Aggiungi un'attività per oggi
           </button>
 
-          <!-- Form compatto nascosto/mostrato -->
+          <!-- Form compatto nascosto/mostrato con campi incolonnati verticalmente -->
           <form id="modal-add-form" onsubmit="handleModalAdd(event)" class="space-y-3 mt-3 hidden">
-            <div class="grid grid-cols-3 gap-2">
-              <input type="text" id="modal-add-title" placeholder="Cosa farai?" required class="col-span-2 px-3 py-2 text-sm bg-slate-50 border border-purple-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300">
-              <input type="time" id="modal-add-time" class="px-3 py-2 text-sm bg-slate-50 border border-purple-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300">
+            <div class="space-y-3">
+              <input type="text" id="modal-add-title" placeholder="Cosa farai?" required class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-purple-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300">
+              <input type="time" id="modal-add-time" class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-purple-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300">
             </div>
             
             <div class="grid grid-cols-6 gap-1" id="modal-cat-selector">
@@ -350,7 +352,9 @@
 
             <div class="flex gap-2 pt-1">
               <button type="button" onclick="toggleModalAddForm()" class="flex-1 bg-slate-100 text-slate-600 font-bold text-xs py-2.5 rounded-xl">Annulla</button>
-              <button type="submit" class="flex-1 bg-purple-500 text-white font-bold text-xs py-2.5 rounded-xl shadow-md">Salva</button>
+              <button type="submit" class="flex-1 bg-purple-500 text-white font-bold text-xs py-2.5 rounded-xl shadow-md">
+                <span id="modal-submit-btn-text">Salva</span>
+              </button>
             </div>
           </form>
         </div>
@@ -418,7 +422,7 @@
         bgClass: 'bg-fuchsia-50 text-fuchsia-800 border-fuchsia-100',
         badgeColor: 'bg-fuchsia-300',
         icon: 'film',
-        activeClass: 'border-fuchsia-300 bg-fuchsia-50 text-fuchsia-800 ring-4 ring-fuchsia-50',
+        activeClass: 'border-fuchsia-300 bg-fuchsia-50 text-fuchsia-800 ring-4 fill-fuchsia-50 ring-fuchsia-50',
         modalActiveClass: 'border-fuchsia-300 bg-fuchsia-50 text-fuchsia-800 ring-2 ring-fuchsia-50'
       },
       viaggi: {
@@ -464,7 +468,8 @@
       selectedCategory: 'sport', // Categoria selezionata di default nel modulo
       selectedModalCategory: 'sport',
       statsRange: 'month',     // Range statistiche: 'month' (mese corrente) o 'all' (tutto il tempo)
-      chartInstance: null
+      chartInstance: null,
+      editingActivityId: null  // ID dell'attività attualmente in fase di modifica
     };
 
     // Nomi dei mesi in italiano
@@ -509,7 +514,6 @@
     // Salva dati su LocalStorage
     function saveState() {
       localStorage.setItem('planvibe_data_v1', JSON.stringify(state.activities));
-      showToast("Attività salvata! ✨");
       updateChart();
     }
 
@@ -904,6 +908,7 @@
 
       state.activities.push(newActivity);
       saveState();
+      showToast("Pianificata con successo! 🎉");
 
       // Resetta il modulo
       document.getElementById('quick-add-form').reset();
@@ -911,7 +916,6 @@
       // Ritorna al calendario e aggiornalo
       switchTab('calendar');
       renderCalendar();
-      showToast("Pianificata con successo! 🎉");
     }
 
     // MODAL DETTAGLIO GIORNO (APERTURA)
@@ -960,7 +964,7 @@
       renderCalendar();
     }
 
-    // POPOLA ATTIVITÀ NEL MODAL
+    // POPOLA ATTIVITÀ NEL MODAL (Con matitina verde di modifica posizionata sopra al cestino)
     function renderModalActivities() {
       const listContainer = document.getElementById('modal-activities-list');
       listContainer.innerHTML = '';
@@ -989,7 +993,7 @@
         const cat = CATEGORIES[act.category] || CATEGORIES.altro;
         
         const actDiv = document.createElement('div');
-        actDiv.className = `p-4 rounded-2xl border transition flex items-start gap-3 justify-between ${
+        actDiv.className = `p-4 rounded-2xl border transition flex items-stretch gap-3 justify-between ${
           act.completed ? 'bg-purple-50/10 border-purple-100/30 opacity-70' : 'bg-white border-purple-50 shadow-sm'
         }`;
 
@@ -1020,10 +1024,17 @@
             </div>
           </div>
 
-          <!-- Pulsante di eliminazione -->
-          <button onclick="deleteActivity('${act.id}')" class="text-pink-300 hover:text-rose-500 p-1.5 rounded-lg hover:bg-rose-50 transition active:scale-90 self-center">
-            <i data-lucide="trash-2" class="w-4.5 h-4.5"></i>
-          </button>
+          <!-- Pulsanti di controllo: Modifica (Verde) e Cestino (Rosso) incolonnati -->
+          <div class="flex flex-col gap-1 shrink-0 items-center justify-center border-l border-purple-50 pl-2">
+            <!-- Matitina Verde per Modifica -->
+            <button onclick="startEditActivity('${act.id}')" class="text-emerald-500 hover:text-emerald-600 p-1 rounded-lg hover:bg-emerald-50 transition active:scale-90" title="Modifica attività">
+              <i data-lucide="pencil" class="w-4 h-4"></i>
+            </button>
+            <!-- Cestino Rosso per Eliminazione -->
+            <button onclick="deleteActivity('${act.id}')" class="text-rose-500 hover:text-rose-600 p-1 rounded-lg hover:bg-rose-50 transition active:scale-90" title="Elimina attività">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
         `;
 
         listContainer.appendChild(actDiv);
@@ -1050,6 +1061,38 @@
       showToast("Attività rimossa");
     }
 
+    // AZIONE: INIZIO MODIFICA (Popola i campi e imposta lo stato di editing)
+    function startEditActivity(id) {
+      const act = state.activities.find(act => act.id === id);
+      if (!act) return;
+
+      state.editingActivityId = id;
+
+      // Compila i campi del form nel modal con le informazioni dell'attività selezionata
+      document.getElementById('modal-add-title').value = act.title;
+      document.getElementById('modal-add-time').value = act.time || '';
+      selectModalCategory(act.category);
+
+      // Mostra il form e cambia il testo del pulsante di submit in "Salva Modifiche"
+      document.getElementById('modal-submit-btn-text').innerText = "Salva Modifiche";
+      
+      const form = document.getElementById('modal-add-form');
+      const btn = document.getElementById('btn-toggle-modal-add');
+      
+      form.classList.remove('hidden');
+      btn.classList.add('hidden');
+
+      // Scorri verso il basso del modal e dai focus all'input del titolo
+      setTimeout(() => {
+        const modalContent = document.getElementById('day-modal-content');
+        modalContent.scrollTo({
+          top: modalContent.scrollHeight,
+          behavior: 'smooth'
+        });
+        document.getElementById('modal-add-title').focus();
+      }, 50);
+    }
+
     // TOGGLE FORM DI AGGIUNTA INTERNO AL MODAL
     function toggleModalAddForm() {
       const form = document.getElementById('modal-add-form');
@@ -1058,22 +1101,26 @@
       if (form.classList.contains('hidden')) {
         form.classList.remove('hidden');
         btn.classList.add('hidden');
-        // Imposta focus sul titolo
         document.getElementById('modal-add-title').focus();
       } else {
         closeModalAddForm();
       }
     }
 
+    // RESET E CHIUSURA FORM NEL MODAL
     function closeModalAddForm() {
       const form = document.getElementById('modal-add-form');
       const btn = document.getElementById('btn-toggle-modal-add');
       form.classList.add('hidden');
       btn.classList.remove('hidden');
       form.reset();
+      
+      // Ripristina lo stato di default per i nuovi inserimenti
+      state.editingActivityId = null;
+      document.getElementById('modal-submit-btn-text').innerText = "Salva";
     }
 
-    // AZIONE: AGGIUNTA RAPIDA DA MODAL
+    // AZIONE: SALVATAGGIO ATTIVITÀ DA MODAL (Nuova o Modificata)
     function handleModalAdd(event) {
       event.preventDefault();
       
@@ -1082,20 +1129,31 @@
 
       if (!title || !state.selectedDateStr) return;
 
-      const newActivity = {
-        id: 'act_' + Date.now(),
-        title,
-        date: state.selectedDateStr,
-        time: time || null,
-        category: state.selectedModalCategory,
-        completed: false,
-        notes: null
-      };
+      if (state.editingActivityId) {
+        // CASO MODIFICA: Aggiorna l'attività esistente nello stato
+        const idx = state.activities.findIndex(act => act.id === state.editingActivityId);
+        if (idx !== -1) {
+          state.activities[idx].title = title;
+          state.activities[idx].time = time || null;
+          state.activities[idx].category = state.selectedModalCategory;
+          showToast("Attività modificata! ✨");
+        }
+      } else {
+        // CASO INSERIMENTO: Crea una nuova attività
+        const newActivity = {
+          id: 'act_' + Date.now(),
+          title,
+          date: state.selectedDateStr,
+          time: time || null,
+          category: state.selectedModalCategory,
+          completed: false,
+          notes: null
+        };
+        state.activities.push(newActivity);
+        showToast("Pianificata con successo! 🎉");
+      }
 
-      state.activities.push(newActivity);
       saveState();
-
-      // Reset
       closeModalAddForm();
       renderModalActivities();
     }
