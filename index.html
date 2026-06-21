@@ -64,6 +64,15 @@
       border-radius: 8px;
     }
 
+    /* Nasconde la scrollbar del selettore categorie nel modal */
+    #modal-cat-selector::-webkit-scrollbar {
+      display: none;
+    }
+    #modal-cat-selector {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+
     /* Animazione soft per i cambi di tab */
     .tab-content {
       transition: opacity 0.2s ease-in-out;
@@ -168,7 +177,7 @@
           <!-- Generato via JavaScript -->
         </div>
 
-        <!-- Mini Legenda Attività con colori pastello effettivi -->
+        <!-- Mini Legenda Attività con colori pastello effettivi (Aggiornata a 9 elementi) -->
         <div class="bg-purple-50/30 rounded-2xl p-4 border border-purple-50/50">
           <h4 class="text-xs font-bold text-purple-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
             <i data-lucide="heart" class="w-3.5 h-3.5 fill-purple-300 text-purple-400"></i> Legenda Colori
@@ -179,6 +188,9 @@
             <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #e879f9"></span> Cinema</div>
             <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #6ee7b7"></span> Viaggi</div>
             <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #f97316"></span> Lavoro</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #22d3ee"></span> Shopping</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #fda4af"></span> Benessere</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #0d9488"></span> Casa</div>
             <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #fde047"></span> Altro</div>
           </div>
         </div>
@@ -211,6 +223,7 @@
 
             <div>
               <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Categoria</label>
+              <!-- Il selettore qui genererà dinamicamente 9 elementi in 3 righe da 3 colonne -->
               <div class="grid grid-cols-3 gap-2" id="category-selector">
                 <!-- Selettori generati dinamicamente -->
               </div>
@@ -375,7 +388,8 @@
               </div>
             </div>
             
-            <div class="grid grid-cols-6 gap-1" id="modal-cat-selector">
+            <!-- Cambiato in un contenitore Flex con scorrimento orizzontale orizzontale e scorrimento iOS nativo -->
+            <div class="flex overflow-x-auto gap-2 pb-2 scrollbar-none snap-x snap-mandatory px-1" id="modal-cat-selector" style="-webkit-overflow-scrolling: touch;">
               <!-- Riempito via JS con mini icone -->
             </div>
 
@@ -422,7 +436,7 @@
 
   <!-- SCRIPT LOGICA APPLICAZIONE -->
   <script>
-    // Configurazione Categorie con colori e stili attivi pastello personalizzati e coerenti
+    // Configurazione Categorie con colori e stili attivi pastello personalizzati e coerenti (Aggiunti Shopping, Benessere, Casa)
     const CATEGORIES = {
       sport: {
         id: 'sport',
@@ -437,7 +451,7 @@
       hobby: {
         id: 'hobby',
         label: 'Hobby',
-        color: '#c084fc', // Viola brillante (Purple-400) - Aggiornato!
+        color: '#c084fc', // Viola brillante (Purple-400)
         bgClass: 'bg-purple-50 text-purple-800 border-purple-100',
         badgeColor: 'bg-purple-400',
         icon: 'palette',
@@ -473,6 +487,36 @@
         icon: 'briefcase',
         activeClass: 'border-orange-500 bg-orange-50 text-orange-900 ring-4 ring-orange-50',
         modalActiveClass: 'border-orange-500 bg-orange-50 text-orange-900 ring-2 ring-orange-50'
+      },
+      shopping: {
+        id: 'shopping',
+        label: 'Shopping',
+        color: '#22d3ee', // Turchese brillante (Cyan-400)
+        bgClass: 'bg-cyan-50 text-cyan-800 border-cyan-100',
+        badgeColor: 'bg-cyan-300',
+        icon: 'shopping-bag',
+        activeClass: 'border-cyan-300 bg-cyan-50 text-cyan-800 ring-4 ring-cyan-50',
+        modalActiveClass: 'border-cyan-300 bg-cyan-50 text-cyan-800 ring-2 ring-cyan-50'
+      },
+      benessere: {
+        id: 'benessere',
+        label: 'Benessere',
+        color: '#fda4af', // Rosa antico (Rose-300)
+        bgClass: 'bg-rose-50 text-rose-800 border-rose-100',
+        badgeColor: 'bg-rose-300',
+        icon: 'leaf',
+        activeClass: 'border-rose-300 bg-rose-50 text-rose-800 ring-4 ring-rose-50',
+        modalActiveClass: 'border-rose-300 bg-rose-50 text-rose-800 ring-2 ring-rose-50'
+      },
+      casa: {
+        id: 'casa',
+        label: 'Casa',
+        color: '#0d9488', // Verde petrolio (Teal-600)
+        bgClass: 'bg-teal-50 text-teal-800 border-teal-100',
+        badgeColor: 'bg-teal-300',
+        icon: 'home',
+        activeClass: 'border-teal-300 bg-teal-50 text-teal-800 ring-4 ring-teal-50',
+        modalActiveClass: 'border-teal-300 bg-teal-50 text-teal-800 ring-2 ring-teal-50'
       },
       contro: { // mantenuto id 'altro' mappato sotto
         id: 'altro',
@@ -546,7 +590,7 @@
       updateChart();
     }
 
-    // Genera Attività di prova per mostrare l'app popolata
+    // Genera Attività di prova per mostrare l'app popolata con le nuove categorie
     function generateMockData() {
       const today = new Date();
       const year = today.getFullYear();
@@ -563,9 +607,12 @@
         { id: 'm2', title: 'Serata Cinema & Popcorn 🍿', date: d(-1), time: '21:00', category: 'cinema', completed: true },
         { id: 'm3', title: 'Lezione di disegno ad acquerello 🎨', date: d(0), time: '17:00', category: 'hobby', completed: false, notes: 'Portare i pennelli nuovi' },
         { id: 'm4', title: 'Pianificare viaggio di nozze ✈️', date: d(1), time: '20:30', category: 'viaggi', completed: false },
-        { id: 'm5', title: 'Riunione strategica team 💻', date: d(2), time: '10:00', category: 'lavoro', completed: false },
-        { id: 'm6', title: 'Cena relax con amiche 🍰', date: d(3), time: '20:00', category: 'altro', completed: false },
-        { id: 'm7', title: 'Passeggiata in bici 🚲', date: d(5), time: '19:00', category: 'sport', completed: false }
+        { id: 'm5', title: 'Shopping vestiti estivi 🛍️', date: d(1), time: '15:00', category: 'shopping', completed: false },
+        { id: 'm6', title: 'Riunione strategica team 💻', date: d(2), time: '10:00', category: 'lavoro', completed: false },
+        { id: 'm7', title: 'Pomeriggio in SPA Relax 💆‍♀️', date: d(2), time: '17:00', category: 'benessere', completed: true },
+        { id: 'm8', title: 'Pulizie di primavera e fiori 🌸', date: d(3), time: '09:00', category: 'casa', completed: false },
+        { id: 'm9', title: 'Cena relax con amiche 🍰', date: d(4), time: '20:00', category: 'altro', completed: false },
+        { id: 'm10', title: 'Passeggiata in bici 🚲', date: d(5), time: '19:00', category: 'sport', completed: false }
       ];
       localStorage.setItem('planvibe_data_v1', JSON.stringify(state.activities));
     }
@@ -875,7 +922,7 @@
         container.appendChild(btn);
       });
 
-      // Inizializza anche il mini selettore nel Modal (senza duplicati)
+      // Inizializza anche il mini selettore nel Modal (ora a scorrimento orizzontale)
       const modalContainer = document.getElementById('modal-cat-selector');
       modalContainer.innerHTML = '';
       
@@ -885,7 +932,8 @@
         btn.onclick = () => selectModalCategory(cat.id);
         btn.id = `modal-cat-btn-${cat.id}`;
         
-        btn.className = `p-2 rounded-xl border text-center transition flex flex-col items-center justify-center gap-0.5 ${
+        // Aggiunte classi shrink-0 e w-[58px] per bloccare la dimensione identica a prima nel contenitore orizzontale
+        btn.className = `shrink-0 w-[58px] p-2 rounded-xl border text-center transition flex flex-col items-center justify-center gap-0.5 snap-start ${
           state.selectedModalCategory === cat.id 
             ? cat.modalActiveClass 
             : 'border-slate-100 bg-white text-slate-400 hover:bg-slate-50'
@@ -893,7 +941,7 @@
 
         btn.innerHTML = `
           <i data-lucide="${cat.icon}" class="w-3.5 h-3.5 shrink-0" style="color: ${state.selectedModalCategory === cat.id ? 'inherit' : cat.color}"></i>
-          <span class="text-[9px] font-bold">${cat.label}</span>
+          <span class="text-[9px] font-bold tracking-tight">${cat.label}</span>
         `;
         
         modalContainer.appendChild(btn);
