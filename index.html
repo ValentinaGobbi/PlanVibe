@@ -359,8 +359,20 @@
           <!-- Form compatto nascosto/mostrato con campi incolonnati verticalmente -->
           <form id="modal-add-form" onsubmit="handleModalAdd(event)" class="space-y-3 mt-3 hidden">
             <div class="space-y-3">
-              <input type="text" id="modal-add-title" placeholder="Cosa farai?" required class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-purple-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300">
-              <input type="time" id="modal-add-time" class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-purple-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Cosa farai?</label>
+                <input type="text" id="modal-add-title" placeholder="Cosa farai?" required class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-purple-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium">
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Giorno</label>
+                  <input type="date" id="modal-add-date" required class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-purple-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Ora (opzionale)</label>
+                  <input type="time" id="modal-add-time" class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-purple-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium">
+                </div>
+              </div>
             </div>
             
             <div class="grid grid-cols-6 gap-1" id="modal-cat-selector">
@@ -1087,6 +1099,7 @@
 
       // Compila i campi del form nel modal con le informazioni dell'attività selezionata
       document.getElementById('modal-add-title').value = act.title;
+      document.getElementById('modal-add-date').value = act.date;
       document.getElementById('modal-add-time').value = act.time || '';
       selectModalCategory(act.category);
 
@@ -1118,6 +1131,7 @@
       if (form.classList.contains('hidden')) {
         form.classList.remove('hidden');
         btn.classList.add('hidden');
+        document.getElementById('modal-add-date').value = state.selectedDateStr;
         document.getElementById('modal-add-title').focus();
       } else {
         closeModalAddForm();
@@ -1142,15 +1156,17 @@
       event.preventDefault();
       
       const title = document.getElementById('modal-add-title').value.trim();
+      const date = document.getElementById('modal-add-date').value;
       const time = document.getElementById('modal-add-time').value;
 
-      if (!title || !state.selectedDateStr) return;
+      if (!title || !date) return;
 
       if (state.editingActivityId) {
         // CASO MODIFICA: Aggiorna l'attività esistente nello stato
         const idx = state.activities.findIndex(act => act.id === state.editingActivityId);
         if (idx !== -1) {
           state.activities[idx].title = title;
+          state.activities[idx].date = date;
           state.activities[idx].time = time || null;
           state.activities[idx].category = state.selectedModalCategory;
           showToast("Attività modificata! ✨");
@@ -1160,7 +1176,7 @@
         const newActivity = {
           id: 'act_' + Date.now(),
           title,
-          date: state.selectedDateStr,
+          date: date,
           time: time || null,
           category: state.selectedModalCategory,
           completed: false,
@@ -1173,6 +1189,7 @@
       saveState();
       closeModalAddForm();
       renderModalActivities();
+      renderCalendar(); // Aggiorna immediatamente la griglia del calendario
     }
 
     // AGGIORNA MASCOTTE E CONTATORE KAWAII AL CENTRO DEL GRAFICO (Con la nuova sequenza di intervalli personalizzati!)
