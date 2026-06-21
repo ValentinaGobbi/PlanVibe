@@ -82,6 +82,23 @@
       animation: kawaiiFloat 3.5s ease-in-out infinite;
       display: inline-block;
     }
+
+    /* Nuova Animazione Flash LED realistica per il pallino di salvataggio */
+    @keyframes ledFlash {
+      0%, 100% {
+        opacity: 0.25;
+        transform: scale(0.85);
+        box-shadow: 0 0 0 rgba(16, 185, 129, 0);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.1);
+        box-shadow: 0 0 8px rgba(16, 185, 129, 0.8), 0 0 15px rgba(16, 185, 129, 0.4);
+      }
+    }
+    .animate-flash {
+      animation: ledFlash 1.8s infinite ease-in-out;
+    }
   </style>
 </head>
 <body class="flex justify-center min-h-screen text-slate-800 antialiased overflow-x-hidden">
@@ -91,17 +108,17 @@
     
     <!-- HEADER -->
     <header class="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 text-white px-5 pt-6 pb-5 rounded-b-[2rem] shadow-lg sticky top-0 z-30">
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-start">
         <div>
           <h1 class="text-2xl font-extrabold tracking-tight flex items-center gap-2">
             <span>🍀</span> PlanVibe
           </h1>
           <p class="text-xs text-purple-50 font-medium">Il tuo tempo, colorato e super cozy ✨</p>
         </div>
-        <!-- Indicatore di stato salvataggio -->
-        <span class="bg-white/20 backdrop-blur-md text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1">
-          <span class="w-1.5 h-1.5 bg-yellow-300 rounded-full animate-ping"></span>
-          Salvataggio Attivo
+        <!-- Indicatore di stato salvataggio con pallino LED animato a flash di accensione/spegnimento -->
+        <span class="bg-white/20 backdrop-blur-md text-[8.5px] px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1.5 shrink-0 mt-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-flash shrink-0"></span>
+          Salvataggio automatico
         </span>
       </div>
     </header>
@@ -151,7 +168,7 @@
           <!-- Generato via JavaScript -->
         </div>
 
-        <!-- Mini Legenda Attività con colori pastello effettivi (Aggiornati!) -->
+        <!-- Mini Legenda Attività con colori pastello effettivi -->
         <div class="bg-purple-50/30 rounded-2xl p-4 border border-purple-50/50">
           <h4 class="text-xs font-bold text-purple-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
             <i data-lucide="heart" class="w-3.5 h-3.5 fill-purple-300 text-purple-400"></i> Legenda Colori
@@ -270,26 +287,26 @@
             </div>
           </div>
 
-          <!-- Legenda Orizzontale Compatta delle Mascotte Emoji (Aggiornata con le coppie richieste) -->
+          <!-- Legenda Orizzontale Compatta delle Mascotte Emoji (Aggiornata con le quantità richieste!) -->
           <div class="bg-purple-50/40 p-2 rounded-2xl border border-purple-100/40 flex justify-between items-center text-center mt-2 relative z-10">
             <div class="flex-1 flex flex-col items-center">
               <span class="text-sm select-none tracking-tight">🫩🍂</span>
-              <span class="text-[8px] font-extrabold text-slate-400 mt-0.5">0</span>
+              <span class="text-[8px] font-extrabold text-slate-500 mt-0.5">1</span>
             </div>
             <div class="w-[1px] h-3.5 bg-purple-100/80"></div>
             <div class="flex-1 flex flex-col items-center">
               <span class="text-sm select-none tracking-tight">🙂🌱</span>
-              <span class="text-[8px] font-extrabold text-slate-500 mt-0.5">1-3</span>
+              <span class="text-[8px] font-extrabold text-slate-500 mt-0.5">2-4</span>
             </div>
             <div class="w-[1px] h-3.5 bg-purple-100/80"></div>
             <div class="flex-1 flex flex-col items-center">
               <span class="text-sm select-none tracking-tight">🤨🌿</span>
-              <span class="text-[8px] font-extrabold text-slate-500 mt-0.5">4-7</span>
+              <span class="text-[8px] font-extrabold text-slate-500 mt-0.5">5-8</span>
             </div>
             <div class="w-[1px] h-3.5 bg-purple-100/80"></div>
             <div class="flex-1 flex flex-col items-center">
               <span class="text-sm select-none tracking-tight">😌🪴</span>
-              <span class="text-[8px] font-extrabold text-slate-500 mt-0.5">8-12</span>
+              <span class="text-[8px] font-extrabold text-slate-500 mt-0.5">9-12</span>
             </div>
             <div class="w-[1px] h-3.5 bg-purple-100/80"></div>
             <div class="flex-1 flex flex-col items-center">
@@ -333,7 +350,7 @@
           <!-- Riempito via JS -->
         </div>
 
-        <!-- Sezione Aggiunta rapida dentro il Modal (Aggiunto padding bottom extra pb-6 per comandi smartphone) -->
+        <!-- Sezione Aggiunta rapida dentro il Modal -->
         <div class="pt-4 border-t border-purple-50 bg-white shrink-0 pb-6">
           <button onclick="toggleModalAddForm()" id="btn-toggle-modal-add" class="w-full bg-purple-50/50 hover:bg-purple-50 border border-purple-100 border-dashed text-purple-600 text-xs font-bold py-3 rounded-2xl flex justify-center items-center gap-1.5 transition active:scale-95">
             <i data-lucide="plus" class="w-4 h-4"></i> Aggiungi un'attività per oggi
@@ -1158,7 +1175,7 @@
       renderModalActivities();
     }
 
-    // AGGIORNA MASCOTTE E CONTATORE KAWAII AL CENTRO DEL GRAFICO (Con la nuova sequenza di emoji doppie a crescita naturale!)
+    // AGGIORNA MASCOTTE E CONTATORE KAWAII AL CENTRO DEL GRAFICO (Con la nuova sequenza di intervalli personalizzati!)
     function updateKawaiiMascot(completedCount) {
       const emojiEl = document.getElementById('chart-kawaii-emoji');
       const ratioEl = document.getElementById('chart-completed-ratio');
@@ -1168,16 +1185,16 @@
       ratioEl.innerText = `${completedCount} Completate`;
 
       // Cambio emoji dinamico in base al livello di attività completate richiesto
-      if (completedCount === 0) {
-        emojiEl.innerText = '🫩🍂'; // 0 completate
-      } else if (completedCount >= 1 && completedCount <= 3) {
-        emojiEl.innerText = '🙂🌱'; // 1-3 completate
-      } else if (completedCount >= 4 && completedCount <= 7) {
-        emojiEl.innerText = '🤨🌿'; // 4-7 completate
-      } else if (completedCount >= 8 && completedCount <= 12) {
-        emojiEl.innerText = '😌🪴'; // 8-12 completate
+      if (completedCount <= 1) {
+        emojiEl.innerText = '🫩🍂'; // 0-1 completate (riposo iniziale)
+      } else if (completedCount >= 2 && completedCount <= 4) {
+        emojiEl.innerText = '🙂🌱'; // 2-4 completate (primi passi)
+      } else if (completedCount >= 5 && completedCount <= 8) {
+        emojiEl.innerText = '🤨🌿'; // 5-8 completate (costanza)
+      } else if (completedCount >= 9 && completedCount <= 12) {
+        emojiEl.innerText = '😌🪴'; // 9-12 completate (crescita rigogliosa)
       } else {
-        emojiEl.innerText = '🤩🌳'; // 13+ completate
+        emojiEl.innerText = '🤩🌳'; // 13+ completate (un grande albero!)
       }
     }
 
