@@ -92,6 +92,20 @@
       display: inline-block;
     }
 
+    /* Animazione Fluttuante per l'emoji del Brand in alto a sinistra */
+    @keyframes brandEmojiFloat {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-4px) scale(1.12);
+      }
+    }
+    .header-float {
+      animation: brandEmojiFloat 2.8s ease-in-out infinite;
+      display: inline-block;
+    }
+
     /* Nuova Animazione Flash LED realistica per il pallino di salvataggio */
     @keyframes ledFlash {
       0%, 100% {
@@ -119,8 +133,19 @@
     <header class="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 text-white px-5 pt-6 pb-5 rounded-b-[2rem] shadow-lg sticky top-0 z-30">
       <div class="flex justify-between items-start">
         <div>
-          <h1 class="text-2xl font-extrabold tracking-tight flex items-center gap-2">
-            <span>🍀</span> PlanVibe
+          <!-- Modificato per includere la tendina a comparsa per la scelta dell'emoji -->
+          <h1 class="text-2xl font-extrabold tracking-tight flex items-center gap-2 relative">
+            <div class="relative inline-block" id="emoji-selector-parent" onmouseenter="showEmojiDropdown()" onmouseleave="hideEmojiDropdownDelayed()">
+              <button id="header-emoji-btn" class="header-float cursor-pointer hover:scale-110 active:scale-95 transition-transform duration-150 select-none focus:outline-none flex items-center justify-center h-8 w-8 text-2xl" onclick="toggleEmojiDropdown(event)">
+                🍀
+              </button>
+              
+              <!-- Popup Selettore Emoji -->
+              <div id="emoji-dropdown" class="absolute left-0 mt-2 bg-white/95 backdrop-blur-md border border-purple-100 rounded-2xl shadow-xl p-3 grid grid-cols-4 gap-2.5 z-50 w-44 scale-95 opacity-0 pointer-events-none transition-all duration-200 origin-top-left">
+                <!-- Popolato dinamicamente da JavaScript -->
+              </div>
+            </div>
+            <span class="select-none">PlanVibe</span>
           </h1>
           <p class="text-xs text-purple-50 font-medium">Il tuo tempo, colorato e super cozy ✨</p>
         </div>
@@ -533,6 +558,9 @@
     // Allineamento alias per compatibilità id nel database locale
     CATEGORIES.altro = CATEGORIES.contro;
 
+    // Lista emoji disponibili per la selezione del brand (Invertito '🐵' e '😈' come richiesto)
+    const EMOJI_LIST = ['🍀', '🌸', '❤️', '😈', '🐵', '🐶', '🐱', '🦊', '🦄', '🦋', '🐞', '🌵'];
+
     // Stato dell'applicazione
     let state = {
       currentDate: new Date(), // Mese visualizzato attualmente
@@ -542,7 +570,8 @@
       selectedModalCategory: 'sport',
       statsRange: 'month',     // Range statistiche: 'month' (mese corrente) o 'all' (tutto il tempo)
       chartInstance: null,
-      editingActivityId: null  // ID dell'attività attualmente in fase di modifica
+      editingActivityId: null,  // ID dell'attività attualmente in fase di modifica
+      headerEmoji: '🍀'       // Emoji predefinita del logo
     };
 
     // Nomi dei mesi in italiano
@@ -569,6 +598,7 @@
       updateStatsMonthHeader();
       setupCategorySelectors();
       setupSwipeGestures();
+      renderHeaderEmojiDropdown();
       lucide.createIcons();
     });
 
@@ -582,11 +612,19 @@
           state.activities = [];
         }
       }
+      // Caricamento dell'emoji personalizzata
+      const savedEmoji = localStorage.getItem('planvibe_emoji_v1');
+      if (savedEmoji) {
+        state.headerEmoji = savedEmoji;
+      } else {
+        state.headerEmoji = '🍀';
+      }
     }
 
     // Salva dati su LocalStorage
     function saveState() {
       localStorage.setItem('planvibe_data_v1', JSON.stringify(state.activities));
+      localStorage.setItem('planvibe_emoji_v1', state.headerEmoji);
       updateChart();
     }
 
@@ -909,8 +947,6 @@
 
       cell.appendChild(indicatorsDiv);
 
-      // Rimosso il badge "+" come richiesto!
-
       return cell;
     }
 
@@ -983,6 +1019,73 @@
       setupCategorySelectors();
       lucide.createIcons();
     }
+
+    // LOGICA DROP-DOWN SELEZIONE EMOJI BRAND
+    let emojiTimeout = null;
+
+    function renderHeaderEmojiDropdown() {
+      const dropdown = document.getElementById('emoji-dropdown');
+      dropdown.innerHTML = '';
+
+      EMOJI_LIST.forEach(emoji => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = "text-2xl p-1.5 hover:bg-purple-100 rounded-xl transition-all active:scale-90 text-center flex items-center justify-center focus:outline-none select-none h-10 w-10";
+        btn.innerText = emoji;
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          selectHeaderEmoji(emoji);
+        };
+        dropdown.appendChild(btn);
+      });
+
+      // Applica emoji corrente
+      document.getElementById('header-emoji-btn').innerText = state.headerEmoji;
+    }
+
+    function showEmojiDropdown() {
+      if (emojiTimeout) clearTimeout(emojiTimeout);
+      const dropdown = document.getElementById('emoji-dropdown');
+      dropdown.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+      dropdown.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
+    }
+
+    function hideEmojiDropdownDelayed() {
+      if (emojiTimeout) clearTimeout(emojiTimeout);
+      emojiTimeout = setTimeout(() => {
+        hideEmojiDropdown();
+      }, 300); // Ritardo confortevole per evitare chiusure improvvise
+    }
+
+    function hideEmojiDropdown() {
+      const dropdown = document.getElementById('emoji-dropdown');
+      dropdown.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+      dropdown.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
+    }
+
+    function toggleEmojiDropdown(event) {
+      event.stopPropagation();
+      const dropdown = document.getElementById('emoji-dropdown');
+      const isHidden = dropdown.classList.contains('opacity-0');
+      if (isHidden) {
+        showEmojiDropdown();
+      } else {
+        hideEmojiDropdown();
+      }
+    }
+
+    function selectHeaderEmoji(emoji) {
+      state.headerEmoji = emoji;
+      document.getElementById('header-emoji-btn').innerText = emoji;
+      saveState();
+      hideEmojiDropdown();
+      showToast(`Emoji salvata! ${emoji} ✨`);
+    }
+
+    // Chiude il popup delle emoji se si preme altrove
+    window.addEventListener('click', () => {
+      hideEmojiDropdown();
+    });
 
     // GESTIONE NUOVA ATTIVITÀ DA FORM VELOCE (TAB 2)
     function handleQuickAdd(event) {
