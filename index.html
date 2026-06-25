@@ -3,2208 +3,1468 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Outfit Lab</title>
-  <!-- Tailwind CSS per styling premium ed elegante -->
+  <title>PlanVibe - Planning Mensile Kawaii</title>
+  
+  <!-- Tailwind CSS per uno styling moderno e responsive -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons per icone lineari minimaliste e moderne -->
+  
+  <!-- Google Fonts per una tipografia morbida e giocosa -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Libreria Icone Lucide per icone ultra pulite e moderne -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Chart.js per il grafico interattivo delle statistiche -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            fashionBlack: '#0B0B0B',
-            fashionGray: '#F5F5F7',
-            fashionBeige: '#EAE3D2',
-            fashionBeigeDark: '#D4C5B9',
-            rosegold: '#D49B8F',
-            rosegoldLight: '#EAC8C1',
-            rosegoldDark: '#B57A6F',
-          },
           fontFamily: {
-            sans: ['"Cinzel"', 'system-ui', '-apple-system', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fdf4ff',
+              100: '#fae8ff',
+              500: '#d946ef',
+              600: '#c084fc',
+              900: '#701a75'
+            }
           }
         }
       }
     }
   </script>
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+    /* Rimozione dell'evidenziazione blu al tap su dispositivi mobile */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
     
     body {
-      font-family: 'Montserrat', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-    
-    .serif-title {
-      font-family: 'Cinzel', serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #fcf8ff; /* Sfondo leggermente rosato/lavanda caldissimo */
     }
 
-    /* Scrollbar personalizzata e nascosta */
+    /* Scrollbar personalizzate e pulite */
     ::-webkit-scrollbar {
-      width: 4px;
-      height: 4px;
+      width: 5px;
+      height: 5px;
     }
     ::-webkit-scrollbar-track {
-      background: #F5F5F7;
+      background: #faf5ff;
     }
     ::-webkit-scrollbar-thumb {
-      background: #D49B8F;
-      border-radius: 10px;
-    }
-    
-    /* Animazioni fluide per transizioni di pagina */
-    .view-transition {
-      transition: opacity 0.25s ease-in-out, transform 0.25s ease-in-out;
-    }
-    
-    /* Touch targets più accessibili */
-    .touch-target {
-      min-height: 44px;
-      min-width: 44px;
+      background: #e9d5ff;
+      border-radius: 8px;
     }
 
-    /* Effetto glassmorphism premium */
-    .glass-effect {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+    /* Nasconde le scrollbar per elementi orizzontali scorrevoli */
+    .scrollbar-none::-webkit-scrollbar {
+      display: none !important;
     }
-    
-    /* Floating button premium shadow */
-    .fab-shadow {
-      box-shadow: 0 8px 24px rgba(212, 155, 143, 0.4);
+    .scrollbar-none {
+      -ms-overflow-style: none !important;  /* IE and Edge */
+      scrollbar-width: none !important;  /* Firefox */
     }
 
-    /* Animation per modal slide-up */
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
+    /* Animazione soft per i cambi di tab */
+    .tab-content {
+      transition: opacity 0.2s ease-in-out;
     }
-    .animate-slide-up {
-      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+    /* Animazione Fluttuante Kawaii per l'emoji centrale */
+    @keyframes kawaiiFloat {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-8px) scale(1.08);
+      }
+    }
+    .kawaii-float {
+      animation: kawaiiFloat 3.5s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    /* Animazione Fluttuante per l'emoji del Brand in alto a sinistra */
+    @keyframes brandEmojiFloat {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-4px) scale(1.12);
+      }
+    }
+    .header-float {
+      animation: brandEmojiFloat 2.8s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    /* Nuova Animazione Flash LED realistica per il pallino di salvataggio */
+    @keyframes ledFlash {
+      0%, 100% {
+        opacity: 0.25;
+        transform: scale(0.85);
+        box-shadow: 0 0 0 rgba(16, 185, 129, 0);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.1);
+        box-shadow: 0 0 8px rgba(16, 185, 129, 0.8), 0 0 15px rgba(16, 185, 129, 0.4);
+      }
+    }
+    .animate-flash {
+      animation: ledFlash 1.8s infinite ease-in-out;
     }
   </style>
 </head>
-<body class="bg-gray-100 flex justify-center items-stretch h-screen overflow-hidden">
+<body class="flex justify-center min-h-screen text-slate-800 antialiased overflow-x-hidden">
 
-  <!-- Main Standalone Mobile Shell (Altezza fissa dello schermo per bloccare la navigazione in basso) -->
-  <div class="w-full max-w-md bg-[#FAF9F6] flex flex-col relative shadow-2xl overflow-hidden h-screen max-h-screen border-x border-gray-100">
+  <!-- Contenitore App Mobile-First -->
+  <div class="w-full max-w-md bg-white flex flex-col min-h-screen shadow-2xl relative border-x border-purple-50 pb-20">
     
-    <!-- Top Premium Header -->
-    <header class="glass-effect sticky top-0 z-40 border-b border-gray-100 px-6 py-4 flex justify-between items-center">
-      <div>
-        <h1 class="serif-title text-2xl font-bold tracking-widest text-fashionBlack flex items-center gap-1">
-          OUTFIT LAB
-        </h1>
-        <p class="text-[10px] uppercase tracking-widest text-gray-400 font-medium">Assistant Guardaroba Digitale</p>
-      </div>
-      <div class="flex items-center gap-3">
-        <!-- Quick Stats Toggle -->
-        <button id="header-stats-btn" onclick="switchView('dashboard')" class="text-fashionBlack hover:text-rosegold transition-colors">
-          <i data-lucide="sparkles" class="w-5 h-5"></i>
-        </button>
-        <button id="header-backup-btn" onclick="switchView('more')" class="text-fashionBlack hover:text-rosegold transition-colors">
-          <i data-lucide="settings" class="w-5 h-5"></i>
-        </button>
+    <!-- HEADER -->
+    <header class="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 text-white px-5 pt-6 pb-5 rounded-b-[2rem] shadow-lg sticky top-0 z-30">
+      <div class="flex justify-between items-start">
+        <div>
+          <!-- Modificato per includere la tendina a comparsa per la scelta dell'emoji -->
+          <h1 class="text-2xl font-extrabold tracking-tight flex items-center gap-2 relative">
+            <div class="relative inline-block" id="emoji-selector-parent" onmouseenter="showEmojiDropdown()" onmouseleave="hideEmojiDropdownDelayed()">
+              <!-- Ingrandito leggermente con text-3xl, h-10 e w-10 per un tocco super kawaii -->
+              <button id="header-emoji-btn" class="header-float cursor-pointer hover:scale-110 active:scale-95 transition-transform duration-150 select-none focus:outline-none flex items-center justify-center h-10 w-10 text-3xl" onclick="toggleEmojiDropdown(event)">
+                🍀
+              </button>
+              
+              <!-- Popup Selettore Emoji (Allineato a sinistra, super schiarito, trasparente con effetto satinato migliorato) -->
+              <div id="emoji-dropdown" class="absolute left-0 mt-2 bg-gradient-to-br from-purple-200/30 via-fuchsia-200/25 to-pink-200/20 backdrop-blur-xl border border-white/40 rounded-2xl shadow-xl p-3 grid grid-cols-4 gap-2.5 z-50 w-44 scale-95 opacity-0 pointer-events-none transition-all duration-200 origin-top-left place-items-center">
+                <!-- Popolato dinamicamente da JavaScript -->
+              </div>
+            </div>
+            <span class="select-none ml-1">PlanVibe</span>
+          </h1>
+          <p class="text-xs text-purple-50 font-medium">Il tuo tempo, colorato e super cozy ✨</p>
+        </div>
+        <!-- Indicatore di stato salvataggio con pallino LED animato a flash di accensione/spegnimento -->
+        <span class="bg-white/20 backdrop-blur-md text-[8.5px] px-2.5 py-0.5 rounded-full font-semibold flex items-center gap-1.5 shrink-0 mt-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-flash shrink-0"></span>
+          Salvataggio automatico
+        </span>
       </div>
     </header>
 
-    <!-- Main Dynamic Content Container (Contenuto scorrevole con padding inferiore di sicurezza) -->
-    <main id="app-container" class="flex-1 overflow-y-auto px-4 py-4 pb-24">
-      
-      <!-- ================= VIEW 1: DASHBOARD ================= -->
-      <section id="view-dashboard" class="view-transition space-y-6">
-        <!-- Banner Intro -->
-        <div class="bg-fashionBlack text-white p-5 rounded-2xl relative overflow-hidden">
-          <div class="absolute right-[-20px] bottom-[-20px] text-white opacity-5 pointer-events-none">
-            <i data-lucide="shirt" class="w-48 h-48"></i>
-          </div>
-          <p class="text-[10px] tracking-widest uppercase text-rosegold font-semibold">Benvenuta nel tuo</p>
-          <h2 class="serif-title text-xl font-semibold tracking-wider mt-1">Armadio Intelligente</h2>
-          <p class="text-xs text-gray-300 mt-2 font-light">Crea abbinamenti cromatici avanzati, tieni traccia dei tuoi capi e pianifica l'outfit perfetto.</p>
-        </div>
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="fixed top-24 left-1/2 -translate-x-1/2 bg-slate-900/90 backdrop-blur-md text-white text-xs px-4 py-2.5 rounded-full shadow-lg z-50 transform translate-y-12 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2">
+      <i data-lucide="sparkles" class="w-4 h-4 text-yellow-300 animate-pulse"></i>
+      <span id="toast-message">Modifica salvata!</span>
+    </div>
 
-        <!-- Quick Numerical Stats Grid -->
-        <div class="grid grid-cols-3 gap-3">
-          <div class="bg-white p-3 rounded-xl border border-gray-100 text-center shadow-sm">
-            <p id="stat-total" class="text-2xl font-bold text-fashionBlack serif-title">0</p>
-            <p class="text-[9px] uppercase tracking-wider text-gray-400 mt-1">Capi Totali</p>
-          </div>
-          <div class="bg-white p-3 rounded-xl border border-gray-100 text-center shadow-sm">
-            <p id="stat-shoes" class="text-2xl font-bold text-rosegold serif-title">0</p>
-            <p class="text-[9px] uppercase tracking-wider text-gray-400 mt-1">Scarpe</p>
-          </div>
-          <div class="bg-white p-3 rounded-xl border border-gray-100 text-center shadow-sm">
-            <p id="stat-accessories" class="text-2xl font-bold text-fashionBeigeDark serif-title">0</p>
-            <p class="text-[9px] uppercase tracking-wider text-gray-400 mt-1">Accessori</p>
-          </div>
-        </div>
+    <!-- MAIN INTERACTIVE SCREENS CONTAINER -->
+    <main class="flex-1 p-4 overflow-y-auto">
 
-        <!-- Dynamic Recommendation Banner -->
-        <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm space-y-3">
-          <div class="flex justify-between items-center">
-            <h3 class="serif-title text-xs font-bold tracking-wider uppercase text-fashionBlack flex items-center gap-2">
-              <i data-lucide="compass" class="w-4 h-4 text-rosegold"></i> Suggerimento del Giorno
-            </h3>
-            <span class="text-[10px] text-gray-400 bg-fashionGray px-2 py-0.5 rounded-full">Casuale</span>
-          </div>
-          <div id="dashboard-daily-tip" class="text-xs text-gray-600 font-light leading-relaxed">
-            Aggiungi almeno un capo per ricevere suggerimenti automatici dal motore d'abbinamento.
-          </div>
-          <button onclick="switchView('builder')" class="w-full text-center py-2 bg-fashionBlack text-white rounded-lg text-xs font-medium tracking-wide hover:bg-rosegold transition-colors">
-            Avvia Outfit Builder
+      <!-- TAB 1: CALENDARIO -->
+      <section id="tab-calendar" class="tab-content block space-y-4">
+        <!-- Selettore Mese -->
+        <div class="flex items-center justify-between bg-purple-50/50 p-2 rounded-2xl border border-purple-100">
+          <button onclick="prevMonth()" class="p-2 hover:bg-white rounded-xl transition shadow-sm active:scale-90">
+            <i data-lucide="chevron-left" class="w-5 h-5 text-purple-600"></i>
+          </button>
+          <h2 id="calendar-month-year" class="font-bold text-purple-900 capitalize text-sm tracking-wide">
+            Giugno 2026
+          </h2>
+          <button onclick="nextMonth()" class="p-2 hover:bg-white rounded-xl transition shadow-sm active:scale-90">
+            <i data-lucide="chevron-right" class="w-5 h-5 text-purple-600"></i>
           </button>
         </div>
 
-        <!-- Aesthetic Charts / Analytics Section -->
-        <div class="space-y-4">
-          <h3 class="serif-title text-xs font-bold tracking-wider uppercase text-fashionBlack">Statistiche di Stile</h3>
+        <!-- Suggerimento Swipe (Solo Mobile) - Emoji scimmietta ingrandita leggermente con classe text-[13px] -->
+        <p class="text-[10px] text-purple-400 text-center -mt-1 flex justify-center items-center gap-1 font-medium">
+          <i data-lucide="smartphone" class="w-3 h-3"></i> trascina per cambiare mese <span class="text-[13px] leading-none inline-block">🐒</span>
+        </p>
+
+        <!-- Griglia Giorni della Settimana (Lunedì -> Domenica) -->
+        <div class="grid grid-cols-7 text-center text-xs font-extrabold text-purple-300 uppercase tracking-widest pt-1">
+          <div>Lun</div>
+          <div>Mar</div>
+          <div>Mer</div>
+          <div>Gio</div>
+          <div>Ven</div>
+          <div class="text-pink-400">Sab</div>
+          <div class="text-rose-400">Dom</div>
+        </div>
+
+        <!-- Griglia dinamica del Calendario -->
+        <div id="calendar-days-grid" class="grid grid-cols-7 gap-2 min-h-[300px]">
+          <!-- Generato via JavaScript -->
+        </div>
+
+        <!-- Mini Legenda Attività con colori pastello effettivi -->
+        <div class="bg-purple-50/30 rounded-2xl p-4 border border-purple-50/50">
+          <h4 class="text-xs font-bold text-purple-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+            <i data-lucide="heart" class="w-3.5 h-3.5 fill-purple-300 text-purple-400"></i> Legenda Colori
+          </h4>
+          <div class="grid grid-cols-3 gap-2.5 text-xs font-semibold text-slate-600">
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #7dd3fc"></span> Sport</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #c084fc"></span> Hobby</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #e879f9"></span> Cinema</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #6ee7b7"></span> Viaggi</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #f97316"></span> Lavoro</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #22d3ee"></span> Shopping</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #fda4af"></span> Selfcare</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #0d9488"></span> Casa</div>
+            <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full shrink-0 shadow-sm" style="background-color: #fde047"></span> Altro</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: AGGIUNGI RAPIDO -->
+      <section id="tab-add" class="tab-content hidden space-y-4 pb-12">
+        <div class="bg-gradient-to-b from-purple-50/50 to-pink-50/20 rounded-3xl p-5 border border-purple-100">
+          <h3 class="text-lg font-extrabold text-slate-800 mb-4 flex items-center gap-2">
+            <i data-lucide="plus-circle" class="text-pink-400"></i> Pianifica Attività
+          </h3>
           
-          <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm space-y-4">
-            <!-- Categorie Predominanti -->
+          <form id="quick-add-form" onsubmit="handleQuickAdd(event)" class="space-y-4">
             <div>
-              <p class="text-[10px] uppercase font-semibold text-gray-400 tracking-wider mb-2">Categorie Più Utilizzate</p>
-              <div id="chart-categories" class="space-y-2">
-                <p class="text-xs text-gray-500 italic">Nessun dato registrato</p>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Quando?</label>
+              <input type="date" id="add-date" required class="w-full px-4 py-3 bg-white border border-purple-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium">
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Cosa farai?</label>
+                <input type="text" id="add-title" placeholder="Es. Allenamento gambe" required class="w-full px-4 py-3 bg-white border border-purple-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Ora (opzionale)</label>
+                <input type="time" id="add-time" class="w-full px-4 py-3 bg-white border border-purple-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium">
               </div>
             </div>
 
-            <!-- Stili Predominanti -->
             <div>
-              <p class="text-[10px] uppercase font-semibold text-gray-400 tracking-wider mb-2">Stili Predominanti</p>
-              <div id="chart-styles" class="space-y-2">
-                <p class="text-xs text-gray-500 italic">Nessun dato registrato</p>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Categoria</label>
+              <div class="grid grid-cols-3 gap-2" id="category-selector">
+                <!-- Selettori generati dinamicamente -->
               </div>
             </div>
 
-            <!-- Colori Predominanti -->
             <div>
-              <p class="text-[10px] uppercase font-semibold text-gray-400 tracking-wider mb-2">Colori Predominanti (Principali e Secondari)</p>
-              <div id="chart-colors" class="flex flex-wrap gap-2">
-                <p class="text-xs text-gray-500 italic">Nessun dato registrato</p>
-              </div>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Note (opzionale)</label>
+              <textarea id="add-notes" rows="2" placeholder="Dettagli aggiuntivi..." class="w-full px-4 py-3 bg-white border border-purple-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium text-sm"></textarea>
             </div>
-          </div>
+
+            <button type="submit" class="w-full bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 text-white font-bold py-3.5 px-4 rounded-2xl shadow-lg shadow-purple-100 hover:shadow-xl active:scale-95 transition-all duration-100 flex justify-center items-center gap-2">
+              <i data-lucide="sparkles" class="w-5 h-5 fill-white/20"></i> Aggiungi al Planning
+            </button>
+          </form>
         </div>
       </section>
 
-      <!-- ================= VIEW 2: GUARDAROBA (CATALOG) ================= -->
-      <section id="view-wardrobe" class="view-transition space-y-4 hidden">
-        <!-- Search & Quick Filters -->
-        <div class="space-y-2">
-          <div class="relative">
-            <input type="text" id="wardrobe-search" placeholder="Cerca nell'armadio..." class="w-full bg-white text-fashionBlack placeholder-gray-400 text-xs rounded-xl pl-10 pr-4 py-3 border border-gray-100 focus:outline-none focus:border-rosegold shadow-sm transition-all">
-            <i data-lucide="search" class="absolute left-3 top-3.5 w-4 h-4 text-gray-400"></i>
+      <!-- TAB 3: STATISTICHE -->
+      <section id="tab-stats" class="tab-content hidden space-y-4">
+        
+        <!-- Filtro Range Temporale -->
+        <div class="bg-purple-50/50 p-1.5 rounded-2xl flex items-center gap-1 border border-purple-100">
+          <button id="stats-range-month" onclick="setStatsRange('month')" class="flex-1 text-center py-2 rounded-xl text-xs font-extrabold bg-white text-purple-700 shadow-sm transition-all duration-200">
+            Mese Selezionato
+          </button>
+          <button id="stats-range-all" onclick="setStatsRange('all')" class="flex-1 text-center py-2 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-800 transition-all duration-200">
+            Tutto il Tempo
+          </button>
+        </div>
+
+        <!-- Selettore Mese in Statistiche -->
+        <div id="stats-month-selector-container" class="flex items-center justify-between bg-purple-50/50 p-2 rounded-2xl border border-purple-100 transition-all duration-300">
+          <button onclick="prevMonthStats()" class="p-2 hover:bg-white rounded-xl transition shadow-sm active:scale-90">
+            <i data-lucide="chevron-left" class="w-5 h-5 text-purple-600"></i>
+          </button>
+          <h2 id="stats-month-year" class="font-bold text-purple-900 capitalize text-sm tracking-wide">
+            Giugno 2026
+          </h2>
+          <button onclick="nextMonthStats()" class="p-2 hover:bg-white rounded-xl transition shadow-sm active:scale-90">
+            <i data-lucide="chevron-right" class="w-5 h-5 text-purple-600"></i>
+          </button>
+        </div>
+
+        <!-- Card Grafico Kawaii -->
+        <div class="bg-white rounded-3xl p-6 border border-purple-50 shadow-sm space-y-4 relative overflow-hidden">
+          <div class="absolute -top-12 -right-12 w-24 h-24 bg-pink-100/30 rounded-full blur-xl pointer-events-none"></div>
+          <div class="absolute -bottom-12 -left-12 w-24 h-24 bg-sky-100/30 rounded-full blur-xl pointer-events-none"></div>
+
+          <div class="text-center">
+            <h3 class="text-lg font-extrabold text-purple-900 flex items-center justify-center gap-1.5">
+              <span>🍀</span> Analisi Attività <span>🍀</span>
+            </h3>
+            <p id="stats-subtitle" class="text-xs text-slate-400 mb-1">Le tue conquiste in tinte pastello</p>
           </div>
           
-          <!-- Slider di chips per filtri veloci -->
-          <div class="flex overflow-x-auto gap-2 pb-1 scrollbar-none">
-            <select id="filter-category" onchange="applyFilters()" class="bg-white text-xs border border-gray-100 rounded-lg px-3 py-1.5 focus:outline-none text-gray-600 shrink-0">
-              <option value="">Tutte le Categorie</option>
-            </select>
-            <select id="filter-style" onchange="applyFilters()" class="bg-white text-xs border border-gray-100 rounded-lg px-3 py-1.5 focus:outline-none text-gray-600 shrink-0">
-              <option value="">Tutti gli Stili</option>
-            </select>
-            <select id="filter-season" onchange="applyFilters()" class="bg-white text-xs border border-gray-100 rounded-lg px-3 py-1.5 focus:outline-none text-gray-600 shrink-0">
-              <option value="">Tutte le Stagioni</option>
-            </select>
-            <select id="filter-color" onchange="applyFilters()" class="bg-white text-xs border border-gray-100 rounded-lg px-3 py-1.5 focus:outline-none text-gray-600 shrink-0">
-              <option value="">Tutti i Colori</option>
-            </select>
-          </div>
-        </div>
+          <div class="relative w-60 h-60 mx-auto flex items-center justify-center">
+            <div id="chart-kawaii-center" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
+              <span id="chart-kawaii-emoji" class="text-4xl kawaii-float">🫩🍂</span>
+              <span id="chart-completed-ratio" class="text-xs font-extrabold text-purple-800 tracking-wide mt-1 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-100/80">0 Completate</span>
+            </div>
 
-        <!-- Content Grid -->
-        <div id="wardrobe-grid" class="grid grid-cols-2 gap-3">
-          <!-- Capi renderizzati dinamicamente -->
-        </div>
+            <canvas id="analyticsChart" class="relative z-10 bg-transparent"></canvas>
 
-        <!-- Empty State Guardaroba -->
-        <div id="wardrobe-empty" class="text-center py-12 space-y-3 hidden">
-          <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-fashionGray text-gray-400">
-            <i data-lucide="folder-open" class="w-6 h-6"></i>
-          </div>
-          <h4 class="serif-title text-sm font-semibold">Guardaroba vuoto</h4>
-          <p class="text-xs text-gray-400 max-w-xs mx-auto">Non hai ancora aggiunto nessun capo. Clicca sul pulsante "+" in basso per iniziare.</p>
-        </div>
-      </section>
-
-      <!-- ================= VIEW 3: OUTFIT BUILDER ================= -->
-      <section id="view-builder" class="view-transition space-y-4 hidden">
-        <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm space-y-4">
-          <h3 class="serif-title text-sm font-bold tracking-wider text-fashionBlack uppercase text-center border-b border-gray-100 pb-2">
-            Motore di Suggerimento
-          </h3>
-
-          <!-- Capo di partenza -->
-          <div class="space-y-2">
-            <label class="text-[10px] tracking-wider uppercase text-gray-400 font-bold">1. Capo Di Partenza (Selezionato)</label>
-            <div id="builder-selected-item" onclick="openGarmentSelector()" class="border border-dashed border-gray-200 rounded-xl p-4 flex items-center justify-center gap-3 cursor-pointer hover:border-rosegold transition-colors">
-              <i data-lucide="plus-circle" class="w-5 h-5 text-rosegold"></i>
-              <span class="text-xs text-gray-500 font-medium">Scegli un capo dall'armadio</span>
+            <div id="empty-chart-msg" class="absolute inset-0 flex flex-col items-center justify-center text-center p-4 bg-white/95 rounded-3xl z-20 hidden">
+              <span class="text-4xl mb-2 animate-bounce">🐒</span>
+              <p class="text-xs font-bold text-purple-900/60">Ancora nessuna attività completata!</p>
+              <p class="text-[10px] text-slate-400 mt-1">Spunta le attività dal planner per colorare la ciambella.</p>
             </div>
           </div>
 
-          <!-- Filtri e parametri dell'abbinamento -->
-          <div class="grid grid-cols-2 gap-3">
-            <div class="space-y-1">
-              <label class="text-[9px] tracking-wider uppercase text-gray-400 font-bold">Stile Ricercato</label>
-              <select id="builder-target-style" class="w-full bg-fashionGray text-xs rounded-lg p-2.5 border border-gray-200 focus:outline-none">
-                <option value="Qualsiasi">Qualsiasi Stile</option>
-                <option value="Casual">Casual</option>
-                <option value="Elegante">Elegante</option>
-                <option value="Business">Business</option>
-                <option value="Streetwear">Streetwear</option>
-                <option value="Sportivo">Sportivo</option>
-                <option value="Vintage">Vintage</option>
-                <option value="Rock">Rock</option>
-                <option value="Minimal">Minimal</option>
-                <option value="Chic">Chic</option>
-                <option value="Smart Casual">Smart Casual</option>
-                <option value="Boho">Boho</option>
-                <option value="Urban">Urban</option>
-              </select>
+          <!-- Legenda Orizzontale delle Mascotte Emoji -->
+          <div class="bg-purple-50/40 p-2 rounded-2xl border border-purple-100/40 flex justify-between items-center text-center mt-2 relative z-10">
+            <div class="flex-1 flex flex-col items-center">
+              <span class="text-sm select-none tracking-tight">🫩🍂</span>
+              <span class="text-[8px] font-extrabold text-slate-500 mt-0.5">1-4</span>
             </div>
-            <div class="space-y-1">
-              <label class="text-[9px] tracking-wider uppercase text-gray-400 font-bold">Stagione</label>
-              <select id="builder-target-season" class="w-full bg-fashionGray text-xs rounded-lg p-2.5 border border-gray-200 focus:outline-none">
-                <option value="Qualsiasi">Qualsiasi Stagione</option>
-                <option value="Primavera">Primavera</option>
-                <option value="Estate">Estate</option>
-                <option value="Autunno">Autunno</option>
-                <option value="Inverno">Inverno</option>
-                <option value="Tutto l'anno">Tutto l'anno</option>
-              </select>
+            <div class="w-[1px] h-3.5 bg-purple-100/80"></div>
+            <div class="flex-1 flex flex-col items-center">
+              <span class="text-sm select-none tracking-tight">🙂🌱</span>
+              <span class="text-[8px] font-extrabold text-slate-500 mt-0.5">5-9</span>
             </div>
-          </div>
-
-          <!-- Generatore Button -->
-          <button onclick="generateOutfits()" class="w-full text-center py-3 bg-fashionBlack text-white rounded-xl text-xs font-semibold uppercase tracking-widest hover:bg-rosegold transition-colors flex items-center justify-center gap-2">
-            <i data-lucide="wand2" class="w-4 h-4"></i> Elabora Abbinamento
-          </button>
-        </div>
-
-        <!-- Risultati Suggestions -->
-        <div id="builder-results" class="space-y-4">
-          <!-- Risultati generati dinamicamente -->
-        </div>
-      </section>
-
-      <!-- ================= VIEW 4: I MIEI OUTFIT & CALENDARIO ================= -->
-      <section id="view-calendar" class="view-transition space-y-4 hidden">
-        <!-- Sub-navigation: I Miei Outfit / Calendario -->
-        <div class="flex border-b border-gray-100">
-          <button id="subtab-outfits" onclick="switchSubTab('outfits')" class="flex-1 text-center py-2.5 text-xs font-bold tracking-wider uppercase border-b-2 border-rosegold text-rosegold">
-            I Miei Outfit
-          </button>
-          <button id="subtab-calendar" onclick="switchSubTab('calendar')" class="flex-1 text-center py-2.5 text-xs font-bold tracking-wider uppercase border-b-2 border-transparent text-gray-400">
-            Calendario
-          </button>
-        </div>
-
-        <!-- TAB: MY OUTFITS LIST -->
-        <div id="subview-outfits" class="space-y-4">
-          <div id="outfits-list-container" class="grid grid-cols-1 gap-3">
-            <!-- Outfit salvati -->
-          </div>
-          <div id="outfits-empty" class="text-center py-12 space-y-2">
-            <i data-lucide="heart" class="w-8 h-8 text-gray-300 mx-auto"></i>
-            <p class="text-xs text-gray-500 font-light">Nessun outfit preferito salvato.</p>
-          </div>
-        </div>
-
-        <!-- TAB: CALENDAR SCHEDULE -->
-        <div id="subview-calendar" class="space-y-4 hidden">
-          <!-- Calendar Selector Month Header -->
-          <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
-            <button onclick="changeMonth(-1)" class="p-1 hover:text-rosegold"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-            <h3 id="calendar-month-year" class="serif-title text-sm font-semibold tracking-wider text-fashionBlack">Mese Anno</h3>
-            <button onclick="changeMonth(1)" class="p-1 hover:text-rosegold"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
-          </div>
-
-          <!-- Calendar Grid Table -->
-          <div class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
-            <div class="grid grid-cols-7 gap-1 text-center mb-2">
-              <span class="text-[9px] font-bold text-gray-400 uppercase">Lu</span>
-              <span class="text-[9px] font-bold text-gray-400 uppercase">Ma</span>
-              <span class="text-[9px] font-bold text-gray-400 uppercase">Me</span>
-              <span class="text-[9px] font-bold text-gray-400 uppercase">Gi</span>
-              <span class="text-[9px] font-bold text-gray-400 uppercase">Ve</span>
-              <span class="text-[9px] font-bold text-gray-400 uppercase">Sa</span>
-              <span class="text-[9px] font-bold text-gray-400 uppercase">Do</span>
+            <div class="w-[1px] h-3.5 bg-purple-100/80"></div>
+            <div class="flex-1 flex flex-col items-center">
+              <span class="text-sm select-none tracking-tight">🤨🌿</span>
+              <span class="text-[8px] font-extrabold text-slate-500 mt-0.5">10-14</span>
             </div>
-            <div id="calendar-days" class="grid grid-cols-7 gap-1.5">
-              <!-- Giorni generati dinamicamente -->
+            <div class="w-[1px] h-3.5 bg-purple-100/80"></div>
+            <div class="flex-1 flex flex-col items-center">
+              <span class="text-sm select-none tracking-tight">😌🪴</span>
+              <span class="text-[8px] font-extrabold text-slate-500 mt-0.5">15-19</span>
             </div>
-          </div>
-
-          <!-- Detail Panel Day Outfit -->
-          <div id="calendar-day-detail" class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm space-y-3 hidden">
-            <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-              <span id="selected-date-label" class="text-xs font-semibold text-fashionBlack">Outfit del Giorno</span>
-              <button onclick="removeCalendarOutfit()" class="text-red-500 text-[10px] uppercase font-bold tracking-wider hover:underline">Rimuovi</button>
-            </div>
-            <div id="selected-date-outfit-view" class="space-y-2">
-              <!-- Outfit salvato per questo giorno -->
+            <div class="w-[1px] h-3.5 bg-purple-100/80"></div>
+            <div class="flex-1 flex flex-col items-center">
+              <span class="text-sm select-none tracking-tight">🤩🌳</span>
+              <span class="text-[8px] font-extrabold text-purple-600 mt-0.5">20+</span>
             </div>
           </div>
         </div>
-      </section>
 
-      <!-- ================= VIEW 5: WISHLIST & BACKUP ================= -->
-      <section id="view-more" class="view-transition space-y-5 hidden">
-        <!-- Wishlist Section -->
-        <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm space-y-4">
-          <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-            <h3 class="serif-title text-sm font-bold tracking-wider uppercase text-fashionBlack flex items-center gap-2">
-              <i data-lucide="gift" class="w-4 h-4 text-rosegold"></i> Wishlist Desideri
-            </h3>
-            <button onclick="openWishlistModal()" class="text-[10px] font-bold text-rosegold border border-rosegold px-2 py-1 rounded hover:bg-rosegold hover:text-white transition-colors">
-              + AGGIUNGI
-            </button>
-          </div>
-          <div id="wishlist-container" class="space-y-2">
-            <!-- Items wishlist -->
-          </div>
-          <div id="wishlist-empty" class="text-center py-6 text-xs text-gray-400 font-light">
-            La tua lista dei desideri è vuota.
-          </div>
-        </div>
-
-        <!-- Custom Categories Management -->
-        <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm space-y-3">
-          <h3 class="serif-title text-xs font-bold tracking-wider uppercase text-fashionBlack border-b border-gray-100 pb-2">
-            Gestisci Categorie Personalizzate
-          </h3>
-          <div class="flex gap-2">
-            <input type="text" id="new-category-input" placeholder="Nuova categoria (es. Kimono)..." class="flex-1 bg-fashionGray text-xs p-2.5 rounded-lg border border-gray-200 focus:outline-none">
-            <button onclick="addNewCategory()" class="bg-fashionBlack text-white text-xs px-4 py-2.5 rounded-lg hover:bg-rosegold transition-colors font-semibold">
-              Aggiungi
-            </button>
-          </div>
-          <div id="custom-categories-list" class="flex flex-wrap gap-1.5 pt-2">
-            <!-- Chip categorie personalizzate con x per eliminarle -->
-          </div>
-        </div>
-
-        <!-- Backup Data Section -->
-        <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm space-y-3">
-          <h3 class="serif-title text-xs font-bold tracking-wider uppercase text-fashionBlack border-b border-gray-100 pb-2">
-            Backup &amp; Ripristino dati
-          </h3>
-          <p class="text-[10px] text-gray-400 leading-relaxed font-light">Esporta il tuo armadio in un file JSON per non rischiare di perderlo, o importalo su un altro dispositivo.</p>
-          <div class="grid grid-cols-2 gap-3">
-            <button onclick="exportData()" class="border border-fashionBlack text-fashionBlack py-2 px-3 rounded-lg text-xs font-medium tracking-wide flex items-center justify-center gap-2 hover:bg-fashionBlack hover:text-white transition-colors">
-              <i data-lucide="download" class="w-4 h-4"></i> Esporta Backup
-            </button>
-            <label class="border border-rosegold text-rosegold py-2 px-3 rounded-lg text-xs font-medium tracking-wide flex items-center justify-center gap-2 cursor-pointer hover:bg-rosegold hover:text-white transition-colors text-center">
-              <i data-lucide="upload" class="w-4 h-4"></i> Importa Backup
-              <input type="file" id="import-file" class="hidden" accept=".json" onchange="importData(event)">
-            </label>
+        <!-- Lista Riepilogativa Totali -->
+        <div class="bg-purple-50/20 rounded-2xl p-4 border border-purple-100/50 space-y-3">
+          <h4 class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="star" class="w-3.5 h-3.5 fill-yellow-200 text-yellow-400"></i> Riepilogo Totali
+          </h4>
+          <div id="stats-breakdown" class="space-y-2">
+            <!-- Riempito via JS -->
           </div>
         </div>
       </section>
 
     </main>
 
-    <!-- Navigation Persistent Bottom Bar (Sempre fissa a fondo contenitore) -->
-    <nav class="glass-effect absolute bottom-0 left-0 right-0 z-40 border-t border-gray-100 px-2 py-2 flex justify-around items-center">
-      <button onclick="switchView('dashboard')" id="nav-dashboard" class="flex flex-col items-center justify-center text-rosegold transition-colors py-1 shrink-0 w-16">
-        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-        <span class="text-[8px] uppercase tracking-wider font-semibold mt-1">Home</span>
-      </button>
-      <button onclick="switchView('wardrobe')" id="nav-wardrobe" class="flex flex-col items-center justify-center text-gray-400 hover:text-rosegold transition-colors py-1 shrink-0 w-16">
-        <i data-lucide="archive" class="w-5 h-5"></i>
-        <span class="text-[8px] uppercase tracking-wider font-semibold mt-1">Armadio</span>
-      </button>
-      
-      <!-- Center Quick FAB -->
-      <button onclick="openAddModal()" class="w-12 h-12 rounded-full bg-fashionBlack hover:bg-rosegold text-white flex items-center justify-center shadow-lg transform -translate-y-2 transition-all fab-shadow shrink-0">
-        <i data-lucide="plus" class="w-6 h-6"></i>
+    <!-- DETTAGLIO GIORNO MODAL -->
+    <div id="day-modal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 flex items-end justify-center">
+      <div id="day-modal-content" class="w-full max-w-md bg-white rounded-t-[2.5rem] shadow-2xl p-6 transform translate-y-full transition-transform duration-300 max-h-[90vh] flex flex-col overflow-y-auto">
+        
+        <!-- Intestazione Modal -->
+        <div class="flex justify-between items-center pb-4 border-b border-purple-50 shrink-0">
+          <div>
+            <span id="modal-day-badge" class="text-[10px] bg-purple-100 text-purple-700 font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Lunedì</span>
+            <h3 id="modal-date-title" class="text-xl font-extrabold text-slate-800 mt-1">15 Giugno 2026</h3>
+          </div>
+          <button onclick="closeDayModal()" class="bg-purple-50 hover:bg-purple-100 p-2.5 rounded-full transition active:scale-90 text-purple-500">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Lista Attività del giorno -->
+        <div class="flex-1 overflow-y-auto py-4 space-y-3 min-h-[120px]" id="modal-activities-list">
+          <!-- Riempito via JS -->
+        </div>
+
+        <!-- Sezione Aggiunta rapida -->
+        <div class="pt-4 border-t border-purple-50 bg-white shrink-0 pb-6">
+          <button onclick="toggleModalAddForm()" id="btn-toggle-modal-add" class="w-full bg-purple-50/50 hover:bg-purple-50 border border-purple-100 border-dashed text-purple-600 text-xs font-bold py-3 rounded-2xl flex justify-center items-center gap-1.5 transition active:scale-95">
+            <i data-lucide="plus" class="w-4 h-4"></i> Aggiungi un'attività per oggi
+          </button>
+
+          <!-- Form compatto nascosto/mostrato -->
+          <form id="modal-add-form" onsubmit="handleModalAdd(event)" class="space-y-3 mt-3 hidden">
+            <div class="space-y-3">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Cosa farai?</label>
+                <input type="text" id="modal-add-title" placeholder="Cosa farai?" required class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-purple-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium">
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Giorno</label>
+                  <input type="date" id="modal-add-date" required class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-purple-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Ora (opzionale)</label>
+                  <input type="time" id="modal-add-time" class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-purple-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300 text-slate-700 font-medium">
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex overflow-x-auto gap-2 pb-2 scrollbar-none snap-x snap-mandatory px-1" id="modal-cat-selector" style="-webkit-overflow-scrolling: touch;">
+              <!-- Riempito via JS con mini icone -->
+            </div>
+
+            <div class="flex gap-2 pt-1">
+              <button type="button" onclick="toggleModalAddForm()" class="flex-1 bg-slate-100 text-slate-600 font-bold text-xs py-2.5 rounded-xl">Annulla</button>
+              <button type="submit" class="flex-1 bg-purple-500 text-white font-bold text-xs py-2.5 rounded-xl shadow-md">
+                <span id="modal-submit-btn-text">Salva</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTTOM TAB NAVIGATION -->
+    <nav class="fixed bottom-0 w-full max-w-md bg-white/95 backdrop-blur-md border-t border-purple-100 h-20 px-6 flex justify-around items-center z-40 rounded-t-[1.5rem] shadow-lg">
+      <button onclick="switchTab('calendar')" id="nav-calendar" class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-purple-600 transition duration-200">
+        <div class="p-1.5 rounded-xl bg-purple-50 text-purple-600 transition-all duration-200" id="nav-icon-calendar">
+          <i data-lucide="calendar" class="w-5 h-5"></i>
+        </div>
+        <span class="text-[10px] font-bold tracking-wide">Planner</span>
       </button>
 
-      <button onclick="switchView('builder')" id="nav-builder" class="flex flex-col items-center justify-center text-gray-400 hover:text-rosegold transition-colors py-1 shrink-0 w-16">
-        <i data-lucide="sparkles" class="w-5 h-5"></i>
-        <span class="text-[8px] uppercase tracking-wider font-semibold mt-1">Builder</span>
+      <button onclick="switchTab('add')" id="nav-add" class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-slate-400 transition duration-200">
+        <div class="p-1.5 rounded-xl transition-all duration-200" id="nav-icon-add">
+          <i data-lucide="plus-circle" class="w-5 h-5"></i>
+        </div>
+        <span class="text-[10px] font-bold tracking-wide">Pianifica</span>
       </button>
-      <button onclick="switchView('calendar')" id="nav-calendar" class="flex flex-col items-center justify-center text-gray-400 hover:text-rosegold transition-colors py-1 shrink-0 w-16">
-        <i data-lucide="calendar" class="w-5 h-5"></i>
-        <span class="text-[8px] uppercase tracking-wider font-semibold mt-1">Outfit</span>
+
+      <button onclick="switchTab('stats')" id="nav-stats" class="flex flex-col items-center justify-center gap-1 w-16 h-12 text-slate-400 transition duration-200">
+        <div class="p-1.5 rounded-xl transition-all duration-200" id="nav-icon-stats">
+          <i data-lucide="pie-chart" class="w-5 h-5"></i>
+        </div>
+        <span class="text-[10px] font-bold tracking-wide">Analisi</span>
       </button>
     </nav>
 
-    <!-- ================= MODAL: ADD / EDIT GARMENT ================= -->
-    <div id="modal-add-garment" class="fixed inset-0 bg-black/60 z-50 flex items-end justify-center hidden">
-      <div class="bg-white w-full max-w-md rounded-t-3xl max-h-[90vh] overflow-y-auto p-6 space-y-5 animate-slide-up pb-8">
-        <div class="flex justify-between items-center border-b border-gray-100 pb-3">
-          <h3 id="modal-title" class="serif-title text-base font-bold tracking-wider text-fashionBlack uppercase">Aggiungi Capo</h3>
-          <button onclick="closeAddModal()" class="p-1 text-gray-400 hover:text-fashionBlack">
-            <i data-lucide="x" class="w-5 h-5"></i>
-          </button>
-        </div>
-
-        <form id="garment-form" onsubmit="saveGarment(event)" class="space-y-4">
-          <input type="hidden" id="form-garment-id">
-          
-          <!-- Image Upload with Double Input Support (Camera & Gallery) -->
-          <div class="space-y-2">
-            <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Foto del capo</label>
-            <div class="flex items-center gap-4">
-              <div id="image-preview-container" class="w-24 h-24 rounded-2xl bg-fashionGray border border-gray-200 overflow-hidden flex items-center justify-center relative">
-                <i data-lucide="image" id="image-placeholder-icon" class="w-8 h-8 text-gray-300"></i>
-                <img id="image-preview" class="w-full h-full object-cover hidden" alt="Preview Capo">
-              </div>
-              <div class="flex-1 space-y-2">
-                <!-- Sezione a due pulsanti per Fotocamera e Galleria separati -->
-                <div class="grid grid-cols-2 gap-2">
-                  <label class="block text-center border border-gray-200 hover:border-rosegold rounded-xl py-2 px-2 text-[11px] font-semibold cursor-pointer transition-colors flex items-center justify-center gap-1.5 bg-white shadow-sm">
-                    <i data-lucide="image" class="w-3.5 h-3.5 text-gray-500"></i>
-                    Galleria
-                    <input type="file" id="garment-image-gallery" class="hidden" accept="image/*" onchange="previewAndCompressImage(event)">
-                  </label>
-                  <label class="block text-center border border-gray-200 hover:border-rosegold rounded-xl py-2 px-2 text-[11px] font-semibold cursor-pointer transition-colors flex items-center justify-center gap-1.5 bg-white shadow-sm">
-                    <i data-lucide="camera" class="w-3.5 h-3.5 text-rosegold"></i>
-                    Fotocamera
-                    <input type="file" id="garment-image-camera" class="hidden" accept="image/*" capture="environment" onchange="previewAndCompressImage(event)">
-                  </label>
-                </div>
-                <p class="text-[9px] text-gray-400 leading-normal">Usa la fotocamera del telefono per scattare una foto al momento o caricala dalla galleria.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Nome Capo -->
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Nome Capo *</label>
-            <input type="text" id="form-name" required placeholder="Es. Jeans Skinny Blu" class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold">
-          </div>
-
-          <!-- Categoria -->
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Categoria *</label>
-            <select id="form-category" required class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold">
-              <!-- Renderizzato dinamicamente -->
-            </select>
-          </div>
-
-          <!-- Colore Principale e Colore Secondario -->
-          <div class="grid grid-cols-2 gap-3">
-            <div class="space-y-1">
-              <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Colore Principale *</label>
-              <select id="form-main-color" required class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold">
-                <option value="Nero">Nero</option>
-                <option value="Grigio">Grigio</option>
-                <option value="Bianco">Bianco</option>
-                <option value="Beige">Beige</option>
-                <option value="Marrone">Marrone</option>
-                <option value="Blu">Blu</option>
-                <option value="Jeans">Jeans</option>
-                <option value="Verde">Verde</option>
-                <option value="Rosso">Rosso</option>
-                <option value="Rosa">Rosa</option>
-                <option value="Fucsia">Fucsia</option>
-                <option value="Viola">Viola</option>
-                <option value="Giallo">Giallo</option>
-                <option value="Ocra">Ocra</option>
-                <option value="Arancione">Arancione</option>
-                <option value="Oro">Oro</option>
-                <option value="Argento">Argento</option>
-              </select>
-            </div>
-            <div class="space-y-1">
-              <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Colore Secondario</label>
-              <select id="form-secondary-color" class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold">
-                <option value="Nessuno">Nessuno</option>
-                <option value="Nero">Nero</option>
-                <option value="Grigio">Grigio</option>
-                <option value="Bianco">Bianco</option>
-                <option value="Beige">Beige</option>
-                <option value="Marrone">Marrone</option>
-                <option value="Blu">Blu</option>
-                <option value="Jeans">Jeans</option>
-                <option value="Verde">Verde</option>
-                <option value="Rosso">Rosso</option>
-                <option value="Rosa">Rosa</option>
-                <option value="Fucsia">Fucsia</option>
-                <option value="Viola">Viola</option>
-                <option value="Giallo">Giallo</option>
-                <option value="Ocra">Ocra</option>
-                <option value="Arancione">Arancione</option>
-                <option value="Oro">Oro</option>
-                <option value="Argento">Argento</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Stagioni (Selezione Multipla Fino a 2 o "Tutto l'anno") -->
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Stagione (Seleziona fino a 2 o 'Tutto l'anno') *</label>
-            <div id="form-season-chips" class="flex flex-wrap gap-1.5 pt-1">
-              <!-- Chips stagioni renderizzate dinamicamente -->
-            </div>
-          </div>
-
-          <!-- Stile (Scelta Multipla a Chips) -->
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Stile (Seleziona uno o più)</label>
-            <div id="form-style-chips" class="flex flex-wrap gap-1.5 pt-1">
-              <!-- Chips di stile renderizzate dinamicamente -->
-            </div>
-          </div>
-
-          <!-- Campi Aggiuntivi: Marca, Materiale, Taglia, Modello -->
-          <div class="grid grid-cols-2 gap-3">
-            <div class="space-y-1">
-              <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Marca</label>
-              <input type="text" id="form-brand" placeholder="Es. Gucci, Zara..." class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold">
-            </div>
-            <div class="space-y-1">
-              <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Materiale</label>
-              <input type="text" id="form-material" placeholder="Es. Cotone, Seta..." class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold">
-            </div>
-            <div class="space-y-1">
-              <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Taglia</label>
-              <input type="text" id="form-size" placeholder="Es. S, 42, 8M..." class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold">
-            </div>
-            <div class="space-y-1">
-              <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Modello</label>
-              <input type="text" id="form-model" placeholder="Es. Slim Fit, Oversize..." class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold">
-            </div>
-          </div>
-
-          <!-- Note e Descrizione -->
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Descrizione &amp; Note</label>
-            <textarea id="form-notes" placeholder="Note extra, abbinamenti preferiti..." rows="2" class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold"></textarea>
-          </div>
-
-          <!-- Submit Buttons -->
-          <div class="flex gap-3 pt-2">
-            <button type="button" onclick="closeAddModal()" class="flex-1 py-3 text-center rounded-xl bg-fashionGray text-gray-600 text-xs font-semibold uppercase tracking-wider">
-              Annulla
-            </button>
-            <button type="submit" class="flex-1 py-3 text-center rounded-xl bg-fashionBlack text-white text-xs font-semibold uppercase tracking-wider hover:bg-rosegold transition-colors">
-              Salva
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- ================= MODAL: DETAIL CARD (SHEET COMPLETA) ================= -->
-    <div id="modal-detail-garment" class="fixed inset-0 bg-black/60 z-50 flex items-end justify-center hidden">
-      <div class="bg-white w-full max-w-md rounded-t-3xl max-h-[85vh] overflow-y-auto p-6 space-y-4 animate-slide-up pb-8">
-        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-          <h3 class="serif-title text-sm font-bold tracking-wider text-fashionBlack uppercase">Dettaglio Capo</h3>
-          <button onclick="closeDetailModal()" class="p-1 text-gray-400 hover:text-fashionBlack">
-            <i data-lucide="x" class="w-5 h-5"></i>
-          </button>
-        </div>
-
-        <div id="detail-card-content" class="space-y-4">
-          <!-- Popolato dinamicamente da UI manager -->
-        </div>
-      </div>
-    </div>
-
-    <!-- ================= MODAL: GARMENT SELECTOR FOR BUILDER ================= -->
-    <div id="modal-selector-garment" class="fixed inset-0 bg-black/60 z-50 flex items-end justify-center hidden">
-      <div class="bg-white w-full max-w-md rounded-t-3xl max-h-[80vh] overflow-y-auto p-6 space-y-4 animate-slide-up pb-8">
-        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-          <h3 class="serif-title text-sm font-bold tracking-wider text-fashionBlack uppercase">Seleziona Capo Iniziale</h3>
-          <button onclick="closeGarmentSelector()" class="p-1 text-gray-400 hover:text-fashionBlack">
-            <i data-lucide="x" class="w-5 h-5"></i>
-          </button>
-        </div>
-
-        <!-- Selettore rapido categoria -->
-        <div class="flex gap-2 overflow-x-auto pb-1">
-          <button onclick="filterSelectorList('')" id="selector-cat-all" class="bg-fashionBlack text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1.5 rounded-lg shrink-0">Tutti</button>
-          <!-- Categorie inserite dinamicamente -->
-        </div>
-
-        <!-- List of Garments suitable for builder selection -->
-        <div id="selector-garments-list" class="grid grid-cols-2 gap-2 max-h-[50vh] overflow-y-auto">
-          <!-- Capi visualizzati dinamicamente -->
-        </div>
-      </div>
-    </div>
-
-    <!-- ================= MODAL: WISHLIST ADD ================= -->
-    <div id="modal-add-wishlist" class="fixed inset-0 bg-black/60 z-50 flex items-end justify-center hidden">
-      <div class="bg-white w-full max-w-md rounded-t-3xl p-6 space-y-4 animate-slide-up pb-8">
-        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-          <h3 class="serif-title text-sm font-bold tracking-wider text-fashionBlack uppercase">Aggiungi a Wishlist</h3>
-          <button onclick="closeWishlistModal()" class="p-1 text-gray-400 hover:text-fashionBlack">
-            <i data-lucide="x" class="w-5 h-5"></i>
-          </button>
-        </div>
-
-        <form id="wishlist-form" onsubmit="saveWishlistItem(event)" class="space-y-4">
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Cosa desideri acquistare?</label>
-            <input type="text" id="wish-name" required placeholder="Es. Blazer in Lino beige" class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold">
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div class="space-y-1">
-              <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Categoria *</label>
-              <select id="wish-category" required class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold">
-                <!-- Categorie -->
-              </select>
-            </div>
-            <div class="space-y-1">
-              <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Prezzo Stimato (€)</label>
-              <input type="number" id="wish-price" placeholder="Es. 89" class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold">
-            </div>
-          </div>
-          <div class="space-y-1">
-            <label class="text-[10px] uppercase tracking-wider text-gray-400 font-bold">Link shop o note</label>
-            <input type="text" id="wish-notes" placeholder="Link o dettagli taglia..." class="w-full bg-fashionGray text-xs p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-rosegold">
-          </div>
-          <button type="submit" class="w-full py-3 bg-fashionBlack text-white rounded-xl text-xs font-semibold uppercase tracking-wider hover:bg-rosegold transition-colors">
-            Aggiungi Desiderio
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- ================= MODAL: SELECT SAVED OUTFIT FOR CALENDAR ================= -->
-    <div id="modal-calendar-outfit-picker" class="fixed inset-0 bg-black/60 z-50 flex items-end justify-center hidden">
-      <div class="bg-white w-full max-w-md rounded-t-3xl max-h-[80vh] overflow-y-auto p-6 space-y-4 animate-slide-up pb-8">
-        <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-          <h3 class="serif-title text-sm font-bold tracking-wider text-fashionBlack uppercase">Abbina Outfit al Giorno</h3>
-          <button onclick="closeCalendarOutfitPicker()" class="p-1 text-gray-400 hover:text-fashionBlack">
-            <i data-lucide="x" class="w-5 h-5"></i>
-          </button>
-        </div>
-        <p class="text-[10px] text-gray-400 tracking-wider uppercase">Seleziona uno dei tuoi outfit registrati:</p>
-        <div id="calendar-picker-list" class="space-y-2">
-          <!-- Lista outfit salvati da selezionare -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Custom In-App Notification Toast (Premium Alternative to alert) -->
-    <div id="app-toast" class="fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-fashionBlack text-white text-xs px-5 py-3 rounded-full shadow-2xl tracking-wide opacity-0 transition-opacity duration-300 pointer-events-none z-50 text-center font-medium">
-      Notifica
-    </div>
-
   </div>
 
-  <!-- JavaScript Logic Modules -->
+  <!-- SCRIPT LOGICA APPLICAZIONE -->
   <script>
-    // ==========================================
-    // MODULE: DATA & DEFINITIONS (data.js)
-    // ==========================================
-    const DEFAULT_CATEGORIES = [
-      "Jeans", "Pantaloni", "Shorts", "Gonne", "Vestiti", 
-      "T-shirt", "Polo", "Camicie", "Felpe", "Maglioni", 
-      "Cardigan", "Giacche", "Cappotti", "Sneakers", 
-      "Scarpe eleganti", "Stivali", "Sandali", "Borse", 
-      "Cinture", "Cappelli", "Accessori"
+    // Configurazione Categorie
+    const CATEGORIES = {
+      sport: {
+        id: 'sport',
+        label: 'Sport',
+        color: '#7dd3fc', // Azzurro Pastello
+        bgClass: 'bg-sky-50 text-sky-800 border-sky-100',
+        badgeColor: 'bg-sky-300',
+        icon: 'dumbbell',
+        activeClass: 'border-sky-300 bg-sky-50 text-sky-800 ring-4 ring-sky-50',
+        modalActiveClass: 'border-sky-300 bg-sky-50 text-sky-800 ring-2 ring-sky-50'
+      },
+      hobby: {
+        id: 'hobby',
+        label: 'Hobby',
+        color: '#c084fc', // Viola brillante
+        bgClass: 'bg-purple-50 text-purple-800 border-purple-100',
+        badgeColor: 'bg-purple-400',
+        icon: 'palette',
+        activeClass: 'border-purple-400 bg-purple-50 text-purple-800 ring-4 ring-purple-50',
+        modalActiveClass: 'border-purple-400 bg-purple-50 text-purple-800 ring-2 ring-purple-50'
+      },
+      cinema: {
+        id: 'cinema',
+        label: 'Cinema',
+        color: '#e879f9', // Fucsia
+        bgClass: 'bg-fuchsia-50 text-fuchsia-800 border-fuchsia-100',
+        badgeColor: 'bg-fuchsia-300',
+        icon: 'film',
+        activeClass: 'border-fuchsia-300 bg-fuchsia-50 text-fuchsia-800 ring-4 fill-fuchsia-50 ring-fuchsia-50',
+        modalActiveClass: 'border-fuchsia-300 bg-fuchsia-50 text-fuchsia-800 ring-2 ring-fuchsia-50'
+      },
+      viaggi: {
+        id: 'viaggi',
+        label: 'Viaggi',
+        color: '#6ee7b7', // Verde Pastello
+        bgClass: 'bg-emerald-50 text-emerald-800 border-emerald-100',
+        badgeColor: 'bg-emerald-300',
+        icon: 'plane',
+        activeClass: 'border-emerald-300 bg-emerald-50 text-emerald-800 ring-4 ring-emerald-50',
+        modalActiveClass: 'border-emerald-300 bg-emerald-50 text-emerald-800 ring-2 ring-emerald-50'
+      },
+      lavoro: {
+        id: 'lavoro',
+        label: 'Lavoro',
+        color: '#f97316', // Arancione
+        bgClass: 'bg-orange-50 text-orange-900 border-orange-100',
+        badgeColor: 'bg-orange-500',
+        icon: 'briefcase',
+        activeClass: 'border-orange-500 bg-orange-50 text-orange-900 ring-4 ring-orange-50',
+        modalActiveClass: 'border-orange-500 bg-orange-50 text-orange-900 ring-2 ring-orange-50'
+      },
+      shopping: {
+        id: 'shopping',
+        label: 'Shopping',
+        color: '#22d3ee', // Turchese
+        bgClass: 'bg-cyan-50 text-cyan-800 border-cyan-100',
+        badgeColor: 'bg-cyan-300',
+        icon: 'shopping-bag',
+        activeClass: 'border-cyan-300 bg-cyan-50 text-cyan-800 ring-4 ring-cyan-50',
+        modalActiveClass: 'border-cyan-300 bg-cyan-50 text-cyan-800 ring-2 ring-cyan-50'
+      },
+      benessere: {
+        id: 'benessere',
+        label: 'Selfcare',
+        color: '#fda4af', // Rosa
+        bgClass: 'bg-rose-50 text-rose-800 border-rose-100',
+        badgeColor: 'bg-rose-300',
+        icon: 'leaf',
+        activeClass: 'border-rose-300 bg-rose-50 text-rose-800 ring-4 ring-rose-50',
+        modalActiveClass: 'border-rose-300 bg-rose-50 text-rose-800 ring-2 ring-rose-50'
+      },
+      casa: {
+        id: 'casa',
+        label: 'Casa',
+        color: '#0d9488', // Verde petrolio
+        bgClass: 'bg-teal-50 text-teal-800 border-teal-100',
+        badgeColor: 'bg-teal-300',
+        icon: 'home',
+        activeClass: 'border-teal-300 bg-teal-50 text-teal-800 ring-4 ring-teal-50',
+        modalActiveClass: 'border-teal-300 bg-teal-50 text-teal-800 ring-2 ring-teal-50'
+      },
+      contro: {
+        id: 'altro',
+        label: 'Altro',
+        color: '#fde047', // Giallo
+        bgClass: 'bg-yellow-50 text-yellow-800 border-yellow-100',
+        badgeColor: 'bg-yellow-300',
+        icon: 'sparkles',
+        activeClass: 'border-yellow-300 bg-yellow-50 text-yellow-800 ring-4 ring-yellow-50',
+        modalActiveClass: 'border-yellow-300 bg-yellow-50 text-yellow-800 ring-2 ring-yellow-50'
+      }
+    };
+
+    // Allineamento alias per compatibilità id nel database locale
+    CATEGORIES.altro = CATEGORIES.contro;
+
+    // Lista emoji disponibili per la selezione del brand
+    const EMOJI_LIST = [
+      '🍀', '🌸', '❤️', '😈', 
+      '🐒', '🐶', '🐱', '🦊', 
+      '🐵', '🙈', '🙉', '🙊', 
+      '🦄', '🦋', '🐞', '🌵'  
     ];
 
-    const STYLES = [
-      "Casual", "Elegante", "Business", "Streetwear", "Sportivo", 
-      "Vintage", "Rock", "Minimal", "Chic", "Smart Casual", "Boho", "Urban"
-    ];
-
-    const SEASONS = [
-      "Primavera", "Estate", "Autunno", "Inverno", "Tutto l'anno"
-    ];
-
-    // Mappatura compatibilità degli stili
-    const STYLE_COMPATIBILITY = {
-      'Casual': ['Casual', 'Streetwear', 'Sportivo', 'Vintage', 'Minimal', 'Smart Casual', 'Boho', 'Urban'],
-      'Elegante': ['Elegante', 'Business', 'Chic', 'Smart Casual', 'Minimal'],
-      'Business': ['Business', 'Elegante', 'Smart Casual', 'Minimal'],
-      'Streetwear': ['Streetwear', 'Casual', 'Sportivo', 'Rock', 'Urban'],
-      'Sportivo': ['Sportivo', 'Casual', 'Streetwear', 'Urban'],
-      'Vintage': ['Vintage', 'Casual', 'Boho', 'Rock', 'Chic'],
-      'Rock': ['Rock', 'Streetwear', 'Casual', 'Urban', 'Vintage'],
-      'Minimal': ['Minimal', 'Casual', 'Elegante', 'Business', 'Chic', 'Smart Casual'],
-      'Chic': ['Chic', 'Elegante', 'Smart Casual', 'Minimal', 'Vintage', 'Boho'],
-      'Smart Casual': ['Smart Casual', 'Casual', 'Elegante', 'Business', 'Minimal', 'Chic'],
-      'Boho': ['Boho', 'Casual', 'Vintage', 'Chic'],
-      'Urban': ['Urban', 'Streetwear', 'Casual', 'Sportivo', 'Rock']
+    // Stato dell'applicazione
+    let state = {
+      currentDate: new Date(), 
+      selectedDateStr: null,   
+      activities: [],          
+      selectedCategory: 'sport', 
+      selectedModalCategory: 'sport',
+      statsRange: 'month',     
+      chartInstance: null,
+      editingActivityId: null,  
+      headerEmoji: '🍀'       
     };
 
-    // Raggruppamento strutturale delle categorie in macroaree
-    const MACRO_SLOTS = {
-      'UPPER': ["T-shirt", "Polo", "Camicie", "Felpe", "Maglioni", "Cardigan"],
-      'LOWER': ["Jeans", "Pantaloni", "Shorts", "Gonne"],
-      'FULL': ["Vestiti"],
-      'OUTER': ["Giacche", "Cappotti"],
-      'SHOES': ["Sneakers", "Scarpe eleganti", "Stivali", "Sandali"],
-      'ACCESSORIES': ["Borse", "Cinture", "Cappelli", "Accessori"]
-    };
-
-    // ==========================================
-    // MODULE: STORAGE MANAGER (storage.js)
-    // ==========================================
-    const StorageManager = {
-      get(key, defaultValue) {
-        try {
-          const item = localStorage.getItem('outfit_lab_' + key);
-          return item ? JSON.parse(item) : defaultValue;
-        } catch (e) {
-          console.error("Errore di caricamento da LocalStorage", e);
-          return defaultValue;
-        }
-      },
-      set(key, value) {
-        try {
-          localStorage.setItem('outfit_lab_' + key, JSON.stringify(value));
-        } catch (e) {
-          showToast("Errore durante il salvataggio dei dati. Memoria piena?");
-          console.error("Errore di salvataggio in LocalStorage", e);
-        }
-      },
-      getGarments() { 
-        const list = this.get('garments', []); 
-        // Conversione/migrazione retrocompatibile per le stagioni multiple e colore secondario
-        return list.map(g => {
-          if (!g.seasons) {
-            g.seasons = g.season ? [g.season] : ["Tutto l'anno"];
-          }
-          if (!g.secondaryColor) {
-            g.secondaryColor = 'Nessuno';
-          }
-          return g;
-        });
-      },
-      saveGarments(g) { this.set('garments', g); },
-      getCategories() { return this.get('categories', DEFAULT_CATEGORIES); },
-      saveCategories(c) { this.set('categories', c); },
-      getOutfits() { return this.get('outfits', []); },
-      saveOutfits(o) { this.set('outfits', o); },
-      getCalendar() { return this.get('calendar', {}); },
-      saveCalendar(c) { this.set('calendar', c); },
-      getWishlist() { return this.get('wishlist', []); },
-      saveWishlist(w) { this.set('wishlist', w); }
-    };
-
-    // ==========================================
-    // MODULE: LOCAL OUTFIT ENGINE (outfitEngine.js)
-    // ==========================================
-    const OutfitEngine = {
-      getMacroSlot(category) {
-        for (const [slot, cats] of Object.entries(MACRO_SLOTS)) {
-          if (cats.includes(category)) return slot;
-        }
-        return 'ACCESSORIES';
-      },
-
-      // Nuove regole cromatiche avanzate (Tono su Tono, Complementari, Neutri)
-      NEUTRALS: ['Bianco', 'Nero', 'Grigio', 'Beige', 'Blu', 'Jeans', 'Oro', 'Argento'],
-
-      COMPLEMENTARY: {
-        'Rosso': ['Verde'],
-        'Verde': ['Rosso'],
-        'Blu': ['Arancione'],
-        'Jeans': ['Arancione'],
-        'Arancione': ['Blu', 'Jeans'],
-        'Giallo': ['Viola'],
-        'Ocra': ['Viola'],
-        'Viola': ['Giallo', 'Ocra']
-      },
-
-      TONO_SU_TONO_FAMILIES: [
-        ['Blu', 'Jeans'],
-        ['Rosa', 'Fucsia'],
-        ['Beige', 'Marrone', 'Ocra'],
-        ['Nero', 'Grigio', 'Bianco']
-      ],
-
-      getColorHarmonyScore(c1, c2) {
-        if (!c1 || !c2 || c1 === 'Nessuno' || c2 === 'Nessuno') return 0;
-        
-        // 1. Tono su Tono - Colore identico
-        if (c1 === c2) return 15;
-        
-        // 2. Tono su Tono - Sfumature appartenenti alla stessa famiglia
-        for (const family of this.TONO_SU_TONO_FAMILIES) {
-          if (family.includes(c1) && family.includes(c2)) return 12;
-        }
-        
-        // 3. Contrasti Complementari
-        if (this.COMPLEMENTARY[c1] && this.COMPLEMENTARY[c1].includes(c2)) return 12;
-        
-        // 4. Colori Neutri (Abbinabili a piacimento come jolly di guardaroba)
-        if (this.NEUTRALS.includes(c1) || this.NEUTRALS.includes(c2)) return 10;
-        
-        // Nessun abbinamento armonioso (clashing di colori)
-        return 0;
-      },
-
-      generateSuggestions(pilotItem, targetStyle, targetSeason, allGarments) {
-        if (!pilotItem) return [];
-        
-        const pilotSlot = this.getMacroSlot(pilotItem.category);
-        const styleConstraint = targetStyle !== 'Qualsiasi' ? targetStyle : pilotItem.styles?.[0] || 'Casual';
-        const isStrictStyle = targetStyle !== 'Qualsiasi';
-        
-        const pilotSeasons = pilotItem.seasons || [pilotItem.season || "Tutto l'anno"];
-        const seasonConstraint = targetSeason !== 'Qualsiasi' ? targetSeason : pilotSeasons[0];
-
-        const candidates = allGarments.filter(item => item.id !== pilotItem.id);
-        const slots = { UPPER: [], LOWER: [], OUTER: [], SHOES: [], ACCESSORIES: [] };
-        
-        candidates.forEach(item => {
-          const slot = this.getMacroSlot(item.category);
-          if (slots[slot]) {
-            // 1. FILTRO DI STILE RESTRITTIVO
-            if (isStrictStyle && !item.styles.includes(styleConstraint)) {
-              return; 
-            }
-
-            // 2. FILTRO DI ARMONIA CROMATICA AVANZATA (Principale + Secondario)
-            const pMain = pilotItem.mainColor;
-            const pSec = pilotItem.secondaryColor || 'Nessuno';
-            const iMain = item.mainColor;
-            const iSec = item.secondaryColor || 'Nessuno';
-
-            // Calcolo combinazioni incrociate
-            const scoreMainMain = this.getColorHarmonyScore(pMain, iMain);
-            const scoreMainSec = this.getColorHarmonyScore(pMain, iSec);
-            const scoreSecMain = this.getColorHarmonyScore(pSec, iMain);
-            const scoreSecSec = this.getColorHarmonyScore(pSec, iSec);
-
-            // Ottieni il valore cromatico massimo calibrato
-            const maxColorScore = Math.max(
-              scoreMainMain,
-              scoreMainSec * 0.7, // Calibrazione coefficiente secondario
-              scoreSecMain * 0.7, 
-              scoreSecSec * 0.5   
-            );
-
-            // Esclusione categorica se l'abbinamento non rispetta alcun criterio di armonia cromatica
-            if (maxColorScore === 0) {
-              return; 
-            }
-
-            let score = 0;
-            
-            // Compatibilità di stile per rilevanza ordinamento
-            const compatibleStyles = STYLE_COMPATIBILITY[styleConstraint] || [];
-            const itemMatchesStyle = item.styles.some(st => compatibleStyles.includes(st));
-            if (itemMatchesStyle) score += 15;
-
-            // Compatibilità di stagione
-            const itemSeasons = item.seasons || [item.season || "Tutto l'anno"];
-            const matchesSeasonConstraint = 
-              seasonConstraint === "Tutto l'anno" || 
-              itemSeasons.includes("Tutto l'anno") || 
-              itemSeasons.includes(seasonConstraint) ||
-              pilotSeasons.some(ps => itemSeasons.includes(ps));
-
-            if (matchesSeasonConstraint) {
-              score += 10;
-            }
-
-            // Somma il punteggio di armocromia calcolato
-            score += maxColorScore;
-            
-            item._score = score;
-            slots[slot].push(item);
-          }
-        });
-
-        for (const slot in slots) {
-          slots[slot].sort((a, b) => b._score - a._score);
-        }
-
-        const outcomes = [];
-
-        for (let step = 0; step < 3; step++) {
-          const proposal = {
-            id: 'prop_' + Date.now() + '_' + step,
-            items: [pilotItem],
-            style: styleConstraint,
-            season: seasonConstraint
-          };
-
-          if (pilotSlot === 'FULL') {
-            if (slots.SHOES[step]) proposal.items.push(slots.SHOES[step]);
-            if (slots.OUTER[step]) proposal.items.push(slots.OUTER[step]);
-            if (slots.ACCESSORIES[step]) proposal.items.push(slots.ACCESSORIES[step]);
-          } else if (pilotSlot === 'UPPER') {
-            if (slots.LOWER[step]) proposal.items.push(slots.LOWER[step]);
-            if (slots.SHOES[step]) proposal.items.push(slots.SHOES[step]);
-            if (slots.OUTER[step]) proposal.items.push(slots.OUTER[step]);
-            if (slots.ACCESSORIES[step]) proposal.items.push(slots.ACCESSORIES[step]);
-          } else if (pilotSlot === 'LOWER') {
-            if (slots.UPPER[step]) proposal.items.push(slots.UPPER[step]);
-            if (slots.SHOES[step]) proposal.items.push(slots.SHOES[step]);
-            if (slots.OUTER[step]) proposal.items.push(slots.OUTER[step]);
-            if (slots.ACCESSORIES[step]) proposal.items.push(slots.ACCESSORIES[step]);
-          } else if (pilotSlot === 'SHOES') {
-            if (slots.UPPER[step]) proposal.items.push(slots.UPPER[step]);
-            if (slots.LOWER[step]) proposal.items.push(slots.LOWER[step]);
-            if (slots.ACCESSORIES[step]) proposal.items.push(slots.ACCESSORIES[step]);
-          } else {
-            if (slots.UPPER[step]) proposal.items.push(slots.UPPER[step]);
-            if (slots.LOWER[step]) proposal.items.push(slots.LOWER[step]);
-            if (slots.SHOES[step]) proposal.items.push(slots.SHOES[step]);
-          }
-
-          if (proposal.items.length >= 2) {
-            outcomes.push(proposal);
-          }
-        }
-
-        return outcomes;
-      }
-    };
-
-    // ==========================================
-    // MODULE: UI & STATE MANAGEMENT
-    // ==========================================
-    let currentView = 'dashboard';
-    let currentSubTab = 'outfits';
-    let garments = [];
-    let categories = [];
-    let outfits = [];
-    let calendar = {};
-    let wishlist = [];
-    let currentStyleSelection = [];
-    let currentSeasonSelection = [];
-    let selectedPilotItem = null;
-    let activeSelectorCategory = '';
-    
-    let calendarDate = new Date();
-    let selectedCalendarDay = null;
-
-    window.addEventListener('DOMContentLoaded', () => {
-      garments = StorageManager.getGarments();
-      categories = StorageManager.getCategories();
-      outfits = StorageManager.getOutfits();
-      calendar = StorageManager.getCalendar();
-      wishlist = StorageManager.getWishlist();
-
-      initFormCategories();
-      initFilterDropdowns();
-      updateDashboardStats();
-      renderWardrobe();
-      renderWishlist();
-      renderCustomCategories();
-      
-      lucide.createIcons();
-    });
-
-    function switchView(viewId) {
-      const views = ['dashboard', 'wardrobe', 'builder', 'calendar', 'more'];
-      views.forEach(v => {
-        const el = document.getElementById('view-' + v);
-        const nav = document.getElementById('nav-' + v);
-        if (v === viewId) {
-          el.classList.remove('hidden');
-          el.style.opacity = '1';
-          if (nav) {
-            nav.classList.add('text-rosegold');
-            nav.classList.remove('text-gray-400');
-          }
-        } else {
-          el.classList.add('hidden');
-          el.style.opacity = '0';
-          if (nav) {
-            nav.classList.remove('text-rosegold');
-            nav.classList.add('text-gray-400');
-          }
-        }
-      });
-      currentView = viewId;
-
-      if (viewId === 'dashboard') {
-        updateDashboardStats();
-      } else if (viewId === 'wardrobe') {
-        renderWardrobe();
-      } else if (viewId === 'calendar') {
-        renderCalendar();
-        renderSavedOutfitsList();
-      }
-      
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function switchSubTab(tabId) {
-      currentSubTab = tabId;
-      const tOutfits = document.getElementById('subtab-outfits');
-      const tCalendar = document.getElementById('subtab-calendar');
-      const vOutfits = document.getElementById('subview-outfits');
-      const vCalendar = document.getElementById('subview-calendar');
-
-      if (tabId === 'outfits') {
-        tOutfits.className = "flex-1 text-center py-2.5 text-xs font-bold tracking-wider uppercase border-b-2 border-rosegold text-rosegold";
-        tCalendar.className = "flex-1 text-center py-2.5 text-xs font-bold tracking-wider uppercase border-b-2 border-transparent text-gray-400";
-        vOutfits.classList.remove('hidden');
-        vCalendar.classList.add('hidden');
-        renderSavedOutfitsList();
-      } else {
-        tCalendar.className = "flex-1 text-center py-2.5 text-xs font-bold tracking-wider uppercase border-b-2 border-rosegold text-rosegold";
-        tOutfits.className = "flex-1 text-center py-2.5 text-xs font-bold tracking-wider uppercase border-b-2 border-transparent text-gray-400";
-        vCalendar.classList.remove('hidden');
-        vOutfits.classList.add('hidden');
-        renderCalendar();
-      }
-    }
-
-    function showToast(message) {
-      const toast = document.getElementById('app-toast');
-      toast.innerText = message;
-      toast.classList.remove('opacity-0');
-      toast.classList.add('opacity-100');
-      setTimeout(() => {
-        toast.classList.remove('opacity-100');
-        toast.classList.add('opacity-0');
-      }, 2500);
-    }
-
-    function updateDashboardStats() {
-      document.getElementById('stat-total').innerText = garments.length;
-      
-      const numShoes = garments.filter(g => MACRO_SLOTS.SHOES.includes(g.category)).length;
-      document.getElementById('stat-shoes').innerText = numShoes;
-      
-      const numAcc = garments.filter(g => MACRO_SLOTS.ACCESSORIES.includes(g.category)).length;
-      document.getElementById('stat-accessories').innerText = numAcc;
-
-      const dailyTipContainer = document.getElementById('dashboard-daily-tip');
-      if (garments.length > 0) {
-        const randomItem = garments[Math.floor(Math.random() * garments.length)];
-        const suggestions = OutfitEngine.generateSuggestions(randomItem, 'Qualsiasi', 'Qualsiasi', garments);
-        if (suggestions.length > 0 && suggestions[0].items.length > 1) {
-          const names = suggestions[0].items.map(i => i.name).join(" + ");
-          dailyTipContainer.innerHTML = `Oggi ti suggeriamo di abbinare il tuo <strong>${randomItem.name}</strong> con:<br><span class="text-rosegold font-medium mt-1 inline-block">${names}</span>`;
-        } else {
-          dailyTipContainer.innerHTML = `Hai registrato <strong>${randomItem.name}</strong>. Continua ad aggiungere capi per sbloccare più combinazioni automatiche!`;
-        }
-      } else {
-        dailyTipContainer.innerHTML = "Aggiungi almeno un capo per ricevere suggerimenti automatici dal motore d'abbinamento.";
-      }
-
-      // Categorie più utilizzate
-      const catCount = {};
-      garments.forEach(g => catCount[g.category] = (catCount[g.category] || 0) + 1);
-      const sortedCats = Object.entries(catCount).sort((a,b) => b[1] - a[1]).slice(0, 3);
-      
-      const chartCats = document.getElementById('chart-categories');
-      if (sortedCats.length > 0) {
-        chartCats.innerHTML = sortedCats.map(([cat, count]) => {
-          const perc = Math.round((count / garments.length) * 100);
-          return `
-            <div>
-              <div class="flex justify-between text-xs text-gray-600 mb-1">
-                <span>${cat}</span>
-                <span class="font-bold">${count} (${perc}%)</span>
-              </div>
-              <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
-                <div class="bg-fashionBlack h-full" style="width: ${perc}%"></div>
-              </div>
-            </div>
-          `;
-        }).join('');
-      } else {
-        chartCats.innerHTML = `<p class="text-xs text-gray-400 italic">Ancora nessun capo registrato.</p>`;
-      }
-
-      // Stili predominanti
-      const styleCount = {};
-      garments.forEach(g => {
-        g.styles.forEach(st => styleCount[st] = (styleCount[st] || 0) + 1);
-      });
-      const sortedStyles = Object.entries(styleCount).sort((a,b) => b[1] - a[1]).slice(0, 3);
-      
-      const chartStyles = document.getElementById('chart-styles');
-      if (sortedStyles.length > 0) {
-        chartStyles.innerHTML = sortedStyles.map(([st, count]) => {
-          const perc = Math.round((count / garments.length) * 100);
-          return `
-            <div>
-              <div class="flex justify-between text-xs text-gray-600 mb-1">
-                <span>${st}</span>
-                <span class="font-bold">${count}</span>
-              </div>
-              <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
-                <div class="bg-rosegold h-full" style="width: ${perc}%"></div>
-              </div>
-            </div>
-          `;
-        }).join('');
-      } else {
-        chartStyles.innerHTML = `<p class="text-xs text-gray-400 italic">Ancora nessun dato.</p>`;
-      }
-
-      // Colori predominanti (Inclusi i secondari)
-      const colorCount = {};
-      garments.forEach(g => {
-        colorCount[g.mainColor] = (colorCount[g.mainColor] || 0) + 1;
-        if (g.secondaryColor && g.secondaryColor !== 'Nessuno') {
-          colorCount[g.secondaryColor] = (colorCount[g.secondaryColor] || 0) + 0.5; // Peso minore per colore secondario
-        }
-      });
-      const sortedColors = Object.entries(colorCount).sort((a,b) => b[1] - a[1]);
-      
-      const chartColors = document.getElementById('chart-colors');
-      if (sortedColors.length > 0) {
-        chartColors.innerHTML = sortedColors.map(([col, count]) => {
-          const bgCol = getColorHex(col);
-          const textColor = (col === 'Bianco' || col === 'Giallo' || col === 'Beige') ? 'text-black border border-gray-200' : 'text-white';
-          return `
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold ${textColor}" style="background-color: ${bgCol}">
-              ${col} (${Math.round(count)})
-            </span>
-          `;
-        }).join('');
-      } else {
-        chartColors.innerHTML = `<p class="text-xs text-gray-400 italic">Nessun colore registrato.</p>`;
-      }
-    }
-
-    function getColorHex(colorName) {
-      const colors = {
-        'Bianco': '#FFFFFF', 'Nero': '#1A1A1A', 'Grigio': '#8E8E93',
-        'Beige': '#F3E5D8', 'Marrone': '#7A5230', 'Blu': '#004080',
-        'Rosso': '#D92121', 'Verde': '#2E7D32', 'Rosa': '#FFC0CB',
-        'Giallo': '#FFEB3B', 'Jeans': '#5A7D9A',
-        'Fucsia': '#FF007F', 'Viola': '#800080', 'Ocra': '#DAA520', 'Arancione': '#FF9800',
-        'Oro': '#D4AF37', 'Argento': '#C0C0C0',
-        'Nessuno': 'transparent'
-      };
-      return colors[colorName] || '#E5E5E5';
-    }
-
-    // Inizializzazione categorie nei form
-    function initFormCategories() {
-      const select = document.getElementById('form-category');
-      const wishSelect = document.getElementById('wish-category');
-      const catsHTML = categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
-      select.innerHTML = catsHTML;
-      wishSelect.innerHTML = catsHTML;
-    }
-
-    // Inizializzazione filtri dropdown
-    function initFilterDropdowns() {
-      const filterCat = document.getElementById('filter-category');
-      filterCat.innerHTML = `<option value="">Tutte le Categorie</option>` + categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
-      
-      const filterStyle = document.getElementById('filter-style');
-      filterStyle.innerHTML = `<option value="">Tutti gli Stili</option>` + STYLES.map(st => `<option value="${st}">${st}</option>`).join('');
-      
-      const filterColor = document.getElementById('filter-color');
-      const colors = ["Nero", "Grigio", "Bianco", "Beige", "Marrone", "Blu", "Jeans", "Verde", "Rosso", "Rosa", "Fucsia", "Viola", "Giallo", "Ocra", "Arancione", "Oro", "Argento"];
-      filterColor.innerHTML = `<option value="">Tutti i Colori</option>` + colors.map(col => `<option value="${col}">${col}</option>`).join('');
-      
-      const filterSeason = document.getElementById('filter-season');
-      const seasons = ["Primavera", "Estate", "Autunno", "Inverno", "Tutto l'anno"];
-      filterSeason.innerHTML = `<option value="">Tutte le Stagioni</option>` + seasons.map(s => `<option value="${s}">${s}</option>`).join('');
-    }
-
-    function renderWardrobe() {
-      const grid = document.getElementById('wardrobe-grid');
-      const emptyState = document.getElementById('wardrobe-empty');
-      
-      const query = document.getElementById('wardrobe-search').value.toLowerCase();
-      const selCat = document.getElementById('filter-category').value;
-      const selStyle = document.getElementById('filter-style').value;
-      const selSeason = document.getElementById('filter-season').value;
-      const selColor = document.getElementById('filter-color').value;
-
-      const filtered = garments.filter(item => {
-        const matchesQuery = item.name.toLowerCase().includes(query) || (item.brand && item.brand.toLowerCase().includes(query));
-        const matchesCat = selCat ? item.category === selCat : true;
-        const matchesStyle = selStyle ? item.styles.includes(selStyle) : true;
-        
-        // Verifica con stagioni multiple
-        const itemSeasons = item.seasons || [item.season || "Tutto l'anno"];
-        const matchesSeason = selSeason 
-          ? (itemSeasons.includes(selSeason) || itemSeasons.includes("Tutto l'anno")) 
-          : true;
-
-        // Verifica colore principale o secondario
-        const matchesColor = selColor 
-          ? (item.mainColor === selColor || item.secondaryColor === selColor) 
-          : true;
-          
-        return matchesQuery && matchesCat && matchesStyle && matchesSeason && matchesColor;
-      });
-
-      if (filtered.length > 0) {
-        grid.classList.remove('hidden');
-        emptyState.classList.add('hidden');
-        grid.innerHTML = filtered.map(item => {
-          const imgHTML = item.image 
-            ? `<img src="${item.image}" class="w-full h-full object-cover" alt="${item.name}">`
-            : `<div class="w-full h-full bg-gradient-to-tr from-fashionGray to-fashionBeige flex flex-col items-center justify-center text-gray-400 gap-1 p-2 text-center">
-                 <i data-lucide="shirt" class="w-6 h-6 text-rosegold"></i>
-                 <span class="text-[9px] uppercase tracking-wider">${item.category}</span>
-               </div>`;
-          
-          const itemSeasons = item.seasons || [item.season || "Tutto l'anno"];
-          const hasSecColor = item.secondaryColor && item.secondaryColor !== 'Nessuno';
-          
-          return `
-            <div onclick="openDetailModal('${item.id}')" class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm active:scale-95 transition-all flex flex-col cursor-pointer">
-              <div class="aspect-square relative w-full bg-fashionGray">
-                ${imgHTML}
-                <span class="absolute top-2 right-2 text-[8px] bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full font-bold shadow-sm tracking-wider uppercase text-fashionBlack">
-                  ${itemSeasons.join(' + ')}
-                </span>
-              </div>
-              <div class="p-3 flex-1 flex flex-col justify-between">
-                <div>
-                  <p class="text-[9px] uppercase tracking-wider text-rosegold font-bold">${item.category}</p>
-                  <h4 class="text-xs font-semibold text-fashionBlack mt-0.5 truncate">${item.name}</h4>
-                </div>
-                <div class="flex justify-between items-center mt-2 pt-2 border-t border-gray-50">
-                  <div class="flex gap-1">
-                    <span class="inline-block w-3.5 h-3.5 rounded-full border border-gray-300" style="background-color: ${getColorHex(item.mainColor)}" title="Principale: ${item.mainColor}"></span>
-                    ${hasSecColor ? `<span class="inline-block w-3.5 h-3.5 rounded-full border border-gray-300" style="background-color: ${getColorHex(item.secondaryColor)}" title="Secondario: ${item.secondaryColor}"></span>` : ''}
-                  </div>
-                  <span class="text-[9px] text-gray-400 font-light truncate max-w-[80px]">${item.brand || 'No Brand'}</span>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join('');
-        lucide.createIcons();
-      } else {
-        grid.classList.add('hidden');
-        emptyState.classList.remove('hidden');
-      }
-    }
-
-    function applyFilters() {
-      renderWardrobe();
-    }
-
-    document.getElementById('wardrobe-search').addEventListener('input', () => {
-      renderWardrobe();
-    });
-
-    // ==========================================
-    // UI SUBMODULE: IMAGE PROCESSING & CROP
-    // ==========================================
-    function previewAndCompressImage(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const maxDim = 320; 
-          canvas.width = maxDim;
-          canvas.height = maxDim;
-          
-          const ctx = canvas.getContext('2d');
-          
-          const side = Math.min(img.width, img.height);
-          const sx = (img.width - side) / 2;
-          const sy = (img.height - side) / 2;
-          
-          ctx.drawImage(img, sx, sy, side, side, 0, 0, maxDim, maxDim);
-          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
-          
-          const preview = document.getElementById('image-preview');
-          preview.src = compressedBase64;
-          preview.classList.remove('hidden');
-          document.getElementById('image-placeholder-icon').classList.add('hidden');
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // ==========================================
-    // UI SUBMODULE: STAGIONI & STILE CHIPS
-    // ==========================================
-    function renderSeasonChips() {
-      const container = document.getElementById('form-season-chips');
-      container.innerHTML = SEASONS.map(s => {
-        const active = currentSeasonSelection.includes(s);
-        const css = active 
-          ? "bg-rosegold text-white border-rosegold" 
-          : "bg-fashionGray text-gray-500 border-gray-200";
-        return `
-          <button type="button" onclick="toggleSeasonForm('${s}')" class="text-[10px] font-medium px-2.5 py-1 rounded-full border transition-all ${css}">
-            ${s}
-          </button>
-        `;
-      }).join('');
-    }
-
-    function toggleSeasonForm(seasonName) {
-      if (seasonName === "Tutto l'anno") {
-        currentSeasonSelection = ["Tutto l'anno"];
-      } else {
-        currentSeasonSelection = currentSeasonSelection.filter(s => s !== "Tutto l'anno");
-        
-        if (currentSeasonSelection.includes(seasonName)) {
-          currentSeasonSelection = currentSeasonSelection.filter(s => s !== seasonName);
-        } else {
-          if (currentSeasonSelection.length >= 2) {
-            currentSeasonSelection.shift(); // Max 2 stagioni contemporaneamente
-          }
-          currentSeasonSelection.push(seasonName);
-        }
-      }
-      renderSeasonChips();
-    }
-
-    // ==========================================
-    // UI SUBMODULE: ADD / EDIT DIALOG
-    // ==========================================
-    function renderStyleChips() {
-      const container = document.getElementById('form-style-chips');
-      container.innerHTML = STYLES.map(st => {
-        const active = currentStyleSelection.includes(st);
-        const css = active 
-          ? "bg-rosegold text-white border-rosegold" 
-          : "bg-fashionGray text-gray-500 border-gray-200";
-        return `
-          <button type="button" onclick="toggleStyleForm('${st}')" class="text-[10px] font-medium px-2.5 py-1 rounded-full border transition-all ${css}">
-            ${st}
-          </button>
-        `;
-      }).join('');
-    }
-
-    function toggleStyleForm(styleName) {
-      if (currentStyleSelection.includes(styleName)) {
-        currentStyleSelection = currentStyleSelection.filter(s => s !== styleName);
-      } else {
-        currentStyleSelection.push(styleName);
-      }
-      renderStyleChips();
-    }
-
-    function openAddModal() {
-      document.getElementById('modal-title').innerText = "Aggiungi Capo";
-      document.getElementById('garment-form').reset();
-      document.getElementById('form-garment-id').value = "";
-      
-      document.getElementById('image-preview').classList.add('hidden');
-      document.getElementById('image-preview').removeAttribute('src');
-      document.getElementById('image-placeholder-icon').classList.remove('hidden');
-      
-      currentStyleSelection = [];
-      currentSeasonSelection = ["Tutto l'anno"];
-      renderStyleChips();
-      renderSeasonChips();
-      
-      document.getElementById('modal-add-garment').classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    // Chiude il modale di aggiunta
-    function closeAddModal() {
-      document.getElementById('modal-add-garment').classList.add('hidden');
-    }
-
-    function saveGarment(event) {
-      event.preventDefault();
-
-      const id = document.getElementById('form-garment-id').value;
-      const name = document.getElementById('form-name').value;
-      const category = document.getElementById('form-category').value;
-      const mainColor = document.getElementById('form-main-color').value;
-      const secondaryColor = document.getElementById('form-secondary-color').value;
-      const brand = document.getElementById('form-brand').value;
-      const material = document.getElementById('form-material').value;
-      const size = document.getElementById('form-size').value;
-      const model = document.getElementById('form-model').value;
-      const notes = document.getElementById('form-notes').value;
-      const imageSrc = document.getElementById('image-preview').getAttribute('src') || '';
-
-      if (currentStyleSelection.length === 0) {
-        currentStyleSelection.push("Casual");
-      }
-      if (currentSeasonSelection.length === 0) {
-        currentSeasonSelection.push("Tutto l'anno");
-      }
-
-      if (id) {
-        const index = garments.findIndex(g => g.id === id);
-        if (index !== -1) {
-          garments[index] = {
-            id, name, category, mainColor, secondaryColor, brand, material, size, model, notes,
-            styles: currentStyleSelection,
-            seasons: currentSeasonSelection,
-            image: imageSrc || garments[index].image
-          };
-          showToast("Capo aggiornato con successo");
-        }
-      } else {
-        const newGarment = {
-          id: 'item_' + Date.now(),
-          name, category, mainColor, secondaryColor, brand, material, size, model, notes,
-          styles: currentStyleSelection,
-          seasons: currentSeasonSelection,
-          image: imageSrc
-        };
-        garments.push(newGarment);
-        showToast("Nuovo capo aggiunto all'armadio");
-      }
-
-      StorageManager.saveGarments(garments);
-      closeAddModal();
-      renderWardrobe();
-      updateDashboardStats();
-    }
-
-    // ==========================================
-    // UI SUBMODULE: DETAIL SHEETS
-    // ==========================================
-    function openDetailModal(id) {
-      const item = garments.find(g => g.id === id);
-      if (!item) return;
-
-      const container = document.getElementById('detail-card-content');
-      const imgHTML = item.image 
-        ? `<img src="${item.image}" class="w-full aspect-square object-cover rounded-2xl shadow-inner border border-gray-100" alt="${item.name}">`
-        : `<div class="w-full aspect-square bg-gradient-to-tr from-fashionGray to-fashionBeige rounded-2xl flex flex-col items-center justify-center text-gray-400 gap-1">
-             <i data-lucide="shirt" class="w-12 h-12 text-rosegold"></i>
-             <span class="text-xs uppercase tracking-widest font-semibold">${item.category}</span>
-           </div>`;
-
-      const itemSeasons = item.seasons || [item.season || "Tutto l'anno"];
-      const hasSecColor = item.secondaryColor && item.secondaryColor !== 'Nessuno';
-
-      container.innerHTML = `
-        <div class="space-y-4">
-          <div class="relative">
-            ${imgHTML}
-            <span class="absolute bottom-3 right-3 text-[10px] bg-fashionBlack/90 text-white px-3 py-1 rounded-full font-bold shadow-sm tracking-wider uppercase">
-              ${itemSeasons.join(' + ')}
-            </span>
-          </div>
-
-          <div class="space-y-1">
-            <span class="text-[10px] uppercase font-bold tracking-widest text-rosegold">${item.category}</span>
-            <h2 class="serif-title text-xl font-bold text-fashionBlack leading-tight">${item.name}</h2>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3 text-xs border-y border-gray-100 py-3">
-            <div>
-              <p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Colore Principale</p>
-              <p class="font-medium mt-0.5 flex items-center gap-1.5 font-semibold">
-                <span class="inline-block w-3 h-3 rounded-full border border-gray-300 shadow-sm" style="background-color: ${getColorHex(item.mainColor)}"></span>
-                ${item.mainColor}
-              </p>
-            </div>
-            <div>
-              <p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Colore Secondario</p>
-              <p class="font-medium mt-0.5 flex items-center gap-1.5">
-                ${hasSecColor ? `
-                  <span class="inline-block w-3 h-3 rounded-full border border-gray-300 shadow-sm" style="background-color: ${getColorHex(item.secondaryColor)}"></span>
-                  ${item.secondaryColor}
-                ` : '<span class="text-gray-400 italic">Nessuno</span>'}
-              </p>
-            </div>
-            <div>
-              <p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Marca</p>
-              <p class="font-medium mt-0.5">${item.brand || 'Generica'}</p>
-            </div>
-            <div>
-              <p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Materiale</p>
-              <p class="font-medium mt-0.5">${item.material || 'Non specificato'}</p>
-            </div>
-            <div>
-              <p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Taglia</p>
-              <p class="font-medium mt-0.5">${item.size || 'Non specificata'}</p>
-            </div>
-            <div>
-              <p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Modello</p>
-              <p class="font-medium mt-0.5">${item.model || 'Standard'}</p>
-            </div>
-          </div>
-
-          <div class="space-y-1.5">
-            <p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Stili associati</p>
-            <div class="flex flex-wrap gap-1">
-              ${item.styles.map(s => `<span class="bg-fashionGray text-fashionBlack text-[10px] px-2.5 py-0.5 rounded-full font-medium border border-gray-100">${s}</span>`).join('')}
-            </div>
-          </div>
-
-          ${item.notes ? `
-            <div class="bg-fashionGray p-3 rounded-xl border border-gray-100">
-              <p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold mb-1">Descrizione &amp; Note</p>
-              <p class="text-xs text-gray-600 font-light leading-relaxed">${item.notes}</p>
-            </div>
-          ` : ''}
-
-          <!-- Bottoni di gestione -->
-          <div class="flex gap-3 pt-2">
-            <button onclick="deleteGarment('${item.id}')" class="flex-1 py-3 bg-red-50 hover:bg-red-100 text-red-500 rounded-xl text-xs font-semibold uppercase tracking-wider transition-colors">
-              Elimina
-            </button>
-            <button onclick="editGarment('${item.id}')" class="flex-1 py-3 bg-fashionBlack text-white rounded-xl text-xs font-semibold uppercase tracking-wider hover:bg-rosegold transition-colors">
-              Modifica
-            </button>
-          </div>
-        </div>
-      `;
-
-      document.getElementById('modal-detail-garment').classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function closeDetailModal() {
-      document.getElementById('modal-detail-garment').classList.add('hidden');
-    }
-
-    function deleteGarment(id) {
-      if (confirm("Sei sicuro di voler eliminare definitivamente questo capo dall'armadio?")) {
-        garments = garments.filter(g => g.id !== id);
-        StorageManager.saveGarments(garments);
-        closeDetailModal();
-        renderWardrobe();
-        updateDashboardStats();
-        showToast("Capo rimosso dall'armadio");
-      }
-    }
-
-    function editGarment(id) {
-      const item = garments.find(g => g.id === id);
-      if (!item) return;
-
-      closeDetailModal();
-      
-      document.getElementById('modal-title').innerText = "Modifica Capo";
-      document.getElementById('form-garment-id').value = item.id;
-      document.getElementById('form-name').value = item.name;
-      document.getElementById('form-category').value = item.category;
-      document.getElementById('form-main-color').value = item.mainColor;
-      document.getElementById('form-secondary-color').value = item.secondaryColor || 'Nessuno';
-      document.getElementById('form-brand').value = item.brand || '';
-      document.getElementById('form-material').value = item.material || '';
-      document.getElementById('form-size').value = item.size || '';
-      document.getElementById('form-model').value = item.model || '';
-      document.getElementById('form-notes').value = item.notes || '';
-
-      if (item.image) {
-        const preview = document.getElementById('image-preview');
-        preview.src = item.image;
-        preview.classList.remove('hidden');
-        document.getElementById('image-placeholder-icon').classList.add('hidden');
-      } else {
-        document.getElementById('image-preview').classList.add('hidden');
-        document.getElementById('image-placeholder-icon').classList.remove('hidden');
-      }
-
-      currentStyleSelection = [...item.styles];
-      currentSeasonSelection = item.seasons ? [...item.seasons] : [item.season || "Tutto l'anno"];
-      
-      renderStyleChips();
-      renderSeasonChips();
-
-      document.getElementById('modal-add-garment').classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    // ==========================================
-    // UI SUBMODULE: OUTFIT BUILDER WIDGET
-    // ==========================================
-    function openGarmentSelector() {
-      const catSelectorHeader = document.getElementById('modal-selector-garment').querySelector('.flex.gap-2');
-      catSelectorHeader.innerHTML = `
-        <button onclick="filterSelectorList('')" id="selector-cat-all" class="text-[10px] uppercase font-bold tracking-wider px-3 py-1.5 rounded-lg border border-fashionBlack bg-fashionBlack text-white">
-          Tutti
-        </button>
-      ` + categories.map(cat => `
-        <button onclick="filterSelectorList('${cat}')" id="selector-cat-${cat.replace(/\s+/g, '')}" class="text-[10px] uppercase font-bold tracking-wider px-3 py-1.5 rounded-lg border border-gray-200 text-gray-500 shrink-0">
-          ${cat}
-        </button>
-      `).join('');
-
-      filterSelectorList('');
-      document.getElementById('modal-selector-garment').classList.remove('hidden');
-    }
-
-    function closeGarmentSelector() {
-      document.getElementById('modal-selector-garment').classList.add('hidden');
-    }
-
-    function filterSelectorList(catName) {
-      activeSelectorCategory = catName;
-
-      const buttons = document.getElementById('modal-selector-garment').querySelectorAll('.flex.gap-2 button');
-      buttons.forEach(btn => {
-        btn.className = "text-[10px] uppercase font-bold tracking-wider px-3 py-1.5 rounded-lg border border-gray-200 text-gray-500 shrink-0";
-      });
-      const activeId = catName ? `selector-cat-${catName.replace(/\s+/g, '')}` : 'selector-cat-all';
-      const activeBtn = document.getElementById(activeId);
-      if (activeBtn) {
-        activeBtn.className = "text-[10px] uppercase font-bold tracking-wider px-3 py-1.5 rounded-lg border border-fashionBlack bg-fashionBlack text-white shrink-0";
-      }
-
-      const filtered = garments.filter(g => catName ? g.category === catName : true);
-      const container = document.getElementById('selector-garments-list');
-
-      if (filtered.length > 0) {
-        container.innerHTML = filtered.map(item => `
-          <div onclick="selectPilotItem('${item.id}')" class="bg-fashionGray p-2.5 rounded-xl border border-gray-200 flex items-center gap-2 cursor-pointer active:scale-95 transition-all text-left">
-            <div class="w-10 h-10 rounded-lg overflow-hidden bg-white shrink-0">
-              ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-gray-300"><i data-lucide="shirt" class="w-5 h-5"></i></div>`}
-            </div>
-            <div class="overflow-hidden">
-              <p class="text-[8px] uppercase tracking-wider text-rosegold font-bold">${item.category}</p>
-              <h5 class="text-[10px] font-bold text-fashionBlack truncate">${item.name}</h5>
-            </div>
-          </div>
-        `).join('');
-        lucide.createIcons();
-      } else {
-        container.innerHTML = `<div class="col-span-2 text-center py-6 text-xs text-gray-400">Nessun capo trovato.</div>`;
-      }
-    }
-
-    function selectPilotItem(id) {
-      const item = garments.find(g => g.id === id);
-      if (!item) return;
-
-      selectedPilotItem = item;
-      const preview = document.getElementById('builder-selected-item');
-      
-      const imgHTML = item.image 
-        ? `<img src="${item.image}" class="w-12 h-12 rounded-lg object-cover">`
-        : `<div class="w-12 h-12 rounded-lg bg-fashionBeige flex items-center justify-center text-rosegold"><i data-lucide="shirt" class="w-5 h-5"></i></div>`;
-
-      const itemSeasons = item.seasons || [item.season || "Tutto l'anno"];
-      const hasSecColor = item.secondaryColor && item.secondaryColor !== 'Nessuno';
-      const colorDisplay = hasSecColor ? `${item.mainColor} + ${item.secondaryColor}` : item.mainColor;
-
-      preview.innerHTML = `
-        <div class="flex items-center justify-between w-full">
-          <div class="flex items-center gap-3">
-            ${imgHTML}
-            <div class="text-left">
-              <span class="text-[8px] uppercase font-bold tracking-wider text-rosegold">${item.category}</span>
-              <h4 class="text-xs font-bold text-fashionBlack">${item.name}</h4>
-              <p class="text-[9px] text-gray-400 font-light">${colorDisplay} • ${itemSeasons.join(' + ')}</p>
-            </div>
-          </div>
-          <span class="text-[10px] text-rosegold font-bold uppercase tracking-wider">Modifica</span>
-        </div>
-      `;
-
-      closeGarmentSelector();
-      lucide.createIcons();
-    }
-
-    function generateOutfits() {
-      if (!selectedPilotItem) {
-        showToast("Seleziona prima un capo di partenza!");
-        return;
-      }
-
-      const style = document.getElementById('builder-target-style').value;
-      const season = document.getElementById('builder-target-season').value;
-
-      const proposals = OutfitEngine.generateSuggestions(selectedPilotItem, style, season, garments);
-      const container = document.getElementById('builder-results');
-
-      if (proposals.length > 0) {
-        container.innerHTML = `
-          <h4 class="serif-title text-xs font-bold tracking-widest text-fashionBlack uppercase mt-4 mb-2">Abbinamenti Ottimizzati</h4>
-          <div class="space-y-4">
-            ${proposals.map((prop, idx) => {
-              const itemsListHTML = prop.items.map(item => {
-                const imgHTML = item.image 
-                  ? `<img src="${item.image}" class="w-12 h-12 rounded-lg object-cover">`
-                  : `<div class="w-12 h-12 rounded-lg bg-fashionBeige flex items-center justify-center text-rosegold"><i data-lucide="shirt" class="w-5 h-5"></i></div>`;
-                
-                const hasSecColor = item.secondaryColor && item.secondaryColor !== 'Nessuno';
-                const colLabel = hasSecColor ? `${item.mainColor} + ${item.secondaryColor}` : item.mainColor;
-                
-                return `
-                  <div class="flex items-center gap-3 bg-white p-2 rounded-xl border border-gray-100 shadow-sm">
-                    ${imgHTML}
-                    <div class="text-left overflow-hidden">
-                      <p class="text-[8px] uppercase font-bold tracking-wider text-rosegold">${item.category}</p>
-                      <h5 class="text-xs font-bold text-fashionBlack truncate">${item.name}</h5>
-                      <p class="text-[9px] text-gray-400 font-light">${colLabel} • ${item.brand || 'Generico'}</p>
-                    </div>
-                  </div>
-                `;
-              }).join(`
-                <div class="flex justify-center my-0.5 text-gray-300">
-                  <i data-lucide="chevrons-down" class="w-4 h-4"></i>
-                </div>
-              `);
-
-              return `
-                <div class="bg-fashionGray p-4 rounded-2xl border border-gray-200 space-y-3">
-                  <div class="flex justify-between items-center">
-                    <span class="text-xs font-bold serif-title text-fashionBlack tracking-wider">Opzione ${idx + 1}</span>
-                    <span class="text-[9px] font-bold bg-white text-rosegold px-2 py-0.5 rounded-full border border-rosegold/20">${prop.style}</span>
-                  </div>
-                  
-                  <div class="space-y-1">
-                    ${itemsListHTML}
-                  </div>
-
-                  <button onclick="saveOutfit('${prop.id}')" class="w-full text-center py-2 bg-white text-fashionBlack rounded-xl text-xs font-bold uppercase tracking-wider border border-gray-200 hover:bg-rosegold hover:text-white transition-colors flex items-center justify-center gap-2">
-                    <i data-lucide="heart" class="w-3.5 h-3.5"></i> Salva nei Preferiti
-                  </button>
-                </div>
-              `;
-            }).join('')}
-          </div>
-        `;
-        
-        window._currentProposals = proposals;
-        lucide.createIcons();
-      } else {
-        container.innerHTML = `
-          <div class="text-center py-8 space-y-2">
-            <i data-lucide="frown" class="w-8 h-8 text-gray-300 mx-auto"></i>
-            <p class="text-xs text-gray-500 font-light">Nessun abbinamento armonioso trovato con le opzioni attuali. Prova a cambiare i criteri o ad aggiungere capi di colori neutri nell'armadio.</p>
-          </div>
-        `;
-        lucide.createIcons();
-      }
-    }
-
-    function saveOutfit(propId) {
-      if (!window._currentProposals) return;
-      const prop = window._currentProposals.find(p => p.id === propId);
-      if (!prop) return;
-
-      const outfitName = prompt("Inserisci un nome o un'occasione per questo outfit:");
-      if (outfitName === null) return;
-
-      const finalName = outfitName.trim() || `Outfit ${prop.style}`;
-
-      const newOutfit = {
-        id: 'outfit_' + Date.now(),
-        name: finalName,
-        style: prop.style,
-        season: prop.season,
-        itemsIds: prop.items.map(i => i.id)
-      };
-
-      outfits.push(newOutfit);
-      StorageManager.saveOutfits(outfits);
-      showToast("Outfit salvato nei preferiti!");
-      
-      renderSavedOutfitsList();
-    }
-
-    // ==========================================
-    // UI SUBMODULE: SAVED OUTFITS & CALENDAR
-    // ==========================================
-    function renderSavedOutfitsList() {
-      const container = document.getElementById('outfits-list-container');
-      const emptyState = document.getElementById('outfits-empty');
-
-      if (outfits.length > 0) {
-        emptyState.classList.add('hidden');
-        container.innerHTML = outfits.map(out => {
-          const realItems = out.itemsIds.map(id => garments.find(g => g.id === id)).filter(Boolean);
-          
-          const imagesRow = realItems.map(item => {
-            return item.image 
-              ? `<img src="${item.image}" class="w-10 h-10 rounded-lg object-cover border border-white shrink-0 shadow-sm">`
-              : `<div class="w-10 h-10 rounded-lg bg-fashionBeige flex items-center justify-center text-rosegold border border-white shrink-0 text-center"><i data-lucide="shirt" class="w-4 h-4"></i></div>`;
-          }).join('');
-
-          return `
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center gap-3">
-              <div class="overflow-hidden space-y-2">
-                <div>
-                  <h4 class="text-xs font-bold text-fashionBlack leading-tight truncate">${out.name}</h4>
-                  <p class="text-[9px] text-gray-400 uppercase font-bold tracking-wider mt-0.5">${out.style} • ${out.season}</p>
-                </div>
-                <div class="flex flex-wrap gap-1">
-                  ${imagesRow}
-                </div>
-              </div>
-              <div class="flex flex-col gap-2 shrink-0">
-                <button onclick="deleteOutfit('${out.id}')" class="p-2 text-gray-300 hover:text-red-500 transition-colors">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
-          `;
-        }).join('');
-        lucide.createIcons();
-      } else {
-        container.innerHTML = '';
-        emptyState.classList.remove('hidden');
-      }
-    }
-
-    function deleteOutfit(outId) {
-      if (confirm("Eliminare definitivamente questo outfit?")) {
-        outfits = outfits.filter(o => o.id !== outId);
-        StorageManager.saveOutfits(outfits);
-        
-        for (const [date, id] of Object.entries(calendar)) {
-          if (id === outId) delete calendar[date];
-        }
-        StorageManager.saveCalendar(calendar);
-        
-        renderSavedOutfitsList();
-        showToast("Outfit eliminato");
-      }
-    }
-
-    // --- CALENDAR GRID ---
-    const MONTH_NAMES = [
+    // Nomi dei mesi in italiano
+    const MONTHS = [
       "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
       "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"
     ];
 
-    function changeMonth(dir) {
-      calendarDate.setMonth(calendarDate.getMonth() + dir);
+    // Nomi dei giorni della settimana
+    const DAYS_OF_WEEK = [
+      "Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"
+    ];
+
+    // INIZIALIZZAZIONE APPLICAZIONE
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      
+      if (state.activities.length === 0) {
+        generateMockData();
+      }
+
       renderCalendar();
-    }
+      updateStatsMonthHeader();
+      setupCategorySelectors();
+      setupSwipeGestures();
+      renderHeaderEmojiDropdown();
+      lucide.createIcons();
+    });
 
-    function renderCalendar() {
-      const year = calendarDate.getFullYear();
-      const month = calendarDate.getMonth();
-      
-      document.getElementById('calendar-month-year').innerText = `${MONTH_NAMES[month]} ${year}`;
-
-      const firstDayIndex = new Date(year, month, 1).getDay();
-      const adjustedFirstDay = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
-      const numDays = new Date(year, month + 1, 0).getDate();
-
-      const daysContainer = document.getElementById('calendar-days');
-      daysContainer.innerHTML = '';
-
-      for (let i = 0; i < adjustedFirstDay; i++) {
-        daysContainer.innerHTML += `<div class="aspect-square"></div>`;
-      }
-
-      for (let d = 1; d <= numDays; d++) {
-        const dStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-        const hasOutfit = !!calendar[dStr];
-        const isToday = new Date().toDateString() === new Date(year, month, d).toDateString();
-        
-        const activeClass = hasOutfit ? 'bg-rosegoldLight/60 text-fashionBlack border-rosegold' : 'bg-fashionGray text-gray-700 hover:bg-gray-200 border-transparent';
-        const todayBorder = isToday ? 'ring-2 ring-fashionBlack ring-offset-1' : '';
-
-        daysContainer.innerHTML += `
-          <button onclick="selectCalendarDay('${dStr}')" class="aspect-square flex flex-col items-center justify-between p-1 text-[11px] font-bold rounded-lg border transition-all ${activeClass} ${todayBorder}">
-            <span>${d}</span>
-            ${hasOutfit ? `<span class="block w-1.5 h-1.5 rounded-full bg-rosegold shrink-0"></span>` : '<span class="w-1.5 h-1.5"></span>'}
-          </button>
-        `;
-      }
-    }
-
-    function selectCalendarDay(dateStr) {
-      selectedCalendarDay = dateStr;
-      
-      const parts = dateStr.split('-');
-      const formattedDate = `${parts[2]} ${MONTH_NAMES[parseInt(parts[1]) - 1]} ${parts[0]}`;
-      document.getElementById('selected-date-label').innerText = `Outfit del ${formattedDate}`;
-
-      const detailPanel = document.getElementById('calendar-day-detail');
-      detailPanel.classList.remove('hidden');
-
-      const savedOutfitId = calendar[dateStr];
-      const viewContainer = document.getElementById('selected-date-outfit-view');
-
-      if (savedOutfitId) {
-        const out = outfits.find(o => o.id === savedOutfitId);
-        if (out) {
-          const realItems = out.itemsIds.map(id => garments.find(g => g.id === id)).filter(Boolean);
-          const imagesRow = realItems.map(item => {
-            return item.image 
-              ? `<img src="${item.image}" class="w-8 h-8 rounded-md object-cover border border-white shadow-sm shrink-0">`
-              : `<div class="w-8 h-8 rounded-md bg-fashionBeige flex items-center justify-center text-rosegold border border-white text-center shrink-0"><i data-lucide="shirt" class="w-3.5 h-3.5"></i></div>`;
-          }).join('');
-
-          viewContainer.innerHTML = `
-            <div class="flex items-center justify-between gap-3 bg-fashionGray p-3 rounded-xl border border-gray-100">
-              <div class="overflow-hidden">
-                <h4 class="text-xs font-bold text-fashionBlack leading-tight truncate">${out.name}</h4>
-                <p class="text-[9px] text-gray-400 uppercase font-bold tracking-wider mt-0.5">${out.style}</p>
-                <div class="flex flex-wrap gap-1 mt-1.5">
-                  ${imagesRow}
-                </div>
-              </div>
-              <button onclick="openCalendarOutfitPicker()" class="text-[10px] bg-white border border-gray-200 px-2.5 py-1.5 rounded-lg font-semibold hover:bg-fashionBlack hover:text-white transition-colors shrink-0">
-                Cambia
-              </button>
-            </div>
-          `;
-          lucide.createIcons();
-          return;
+    // Carica dati da LocalStorage
+    function loadState() {
+      const saved = localStorage.getItem('planvibe_data_v1');
+      if (saved) {
+        try {
+          state.activities = JSON.parse(saved);
+        } catch(e) {
+          state.activities = [];
         }
       }
+      const savedEmoji = localStorage.getItem('planvibe_emoji_v1');
+      if (savedEmoji) {
+        state.headerEmoji = savedEmoji;
+      } else {
+        state.headerEmoji = '🍀';
+      }
+    }
 
-      viewContainer.innerHTML = `
-        <button onclick="openCalendarOutfitPicker()" class="w-full text-center py-3 border border-dashed border-gray-300 hover:border-rosegold rounded-xl text-xs text-gray-500 font-medium transition-colors flex items-center justify-center gap-2">
-          <i data-lucide="calendar-plus" class="w-4 h-4 text-rosegold"></i> Pianifica Outfit per questa data
-        </button>
-      `;
+    // Salva dati su LocalStorage
+    function saveState() {
+      localStorage.setItem('planvibe_data_v1', JSON.stringify(state.activities));
+      localStorage.setItem('planvibe_emoji_v1', state.headerEmoji);
+      updateChart();
+    }
+
+    // Genera Attività di prova
+    function generateMockData() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth();
+
+      const d = (dayOffset) => {
+        const target = new Date(year, month, today.getDate() + dayOffset);
+        return target.toISOString().split('T')[0];
+      };
+
+      state.activities = [
+        { id: 'm1', title: 'Yoga mattutino 🧘‍♀️', date: d(-2), time: '08:30', category: 'sport', completed: true, notes: 'Ottimo inizio!' },
+        { id: 'm2', title: 'Serata Cinema & Popcorn 🍿', date: d(-1), time: '21:00', category: 'cinema', completed: true },
+        { id: 'm3', title: 'Lezione di disegno ad acquerello 🎨', date: d(0), time: '17:00', category: 'hobby', completed: false, notes: 'Portare i pennelli nuovi' },
+        { id: 'm4', title: 'Pianificare viaggio di nozze ✈️', date: d(1), time: '20:30', category: 'viaggi', completed: false },
+        { id: 'm5', title: 'Shopping vestiti estivi 🛍️', date: d(1), time: '15:00', category: 'shopping', completed: false },
+        { id: 'm6', title: 'Riunione strategica team 💻', date: d(2), time: '10:00', category: 'lavoro', completed: false },
+        { id: 'm7', title: 'Pomeriggio in SPA Relax 💆‍♀️', date: d(2), time: '17:00', category: 'benessere', completed: true },
+        { id: 'm8', title: 'Pulizie di primavera e fiori 🌸', date: d(3), time: '09:00', category: 'casa', completed: false },
+        { id: 'm9', title: 'Cena relax con amiche 🍰', date: d(4), time: '20:00', category: 'altro', completed: false },
+        { id: 'm10', title: 'Passeggiata in bici 🚲', date: d(5), time: '19:00', category: 'sport', completed: false }
+      ];
+      localStorage.setItem('planvibe_data_v1', JSON.stringify(state.activities));
+    }
+
+    // MOSTRA TOAST DI CONFERMA
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').innerText = message;
+      toast.classList.remove('opacity-0', 'translate-y-12', 'pointer-events-none');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-12', 'pointer-events-none');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2000);
+    }
+
+    // CAMBIO DI SCHEDA (TAB)
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+      const tabs = ['calendar', 'add', 'stats'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`nav-${t}`);
+        const iconWrapper = document.getElementById(`nav-icon-${t}`);
+        if (t === tabId) {
+          btn.classList.add('text-purple-600');
+          btn.classList.remove('text-slate-400');
+          iconWrapper.classList.add('bg-purple-50', 'text-purple-600');
+        } else {
+          btn.classList.remove('text-purple-600');
+          btn.classList.add('text-slate-400');
+          iconWrapper.classList.remove('bg-purple-50', 'text-purple-600');
+        }
+      });
+
+      if (tabId === 'add') {
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('add-date').value = todayStr;
+      }
+
+      if (tabId === 'stats') {
+        updateStatsMonthHeader();
+        setTimeout(updateChart, 50);
+      }
+
       lucide.createIcons();
     }
 
-    function removeCalendarOutfit() {
-      if (selectedCalendarDay && calendar[selectedCalendarDay]) {
-        delete calendar[selectedCalendarDay];
-        StorageManager.saveCalendar(calendar);
-        renderCalendar();
-        selectCalendarDay(selectedCalendarDay);
-        showToast("Outfit rimosso dal giorno");
-      }
-    }
-
-    function openCalendarOutfitPicker() {
-      if (outfits.length === 0) {
-        showToast("Salva prima almeno un outfit nei preferiti!");
-        return;
-      }
-
-      const listContainer = document.getElementById('calendar-picker-list');
-      listContainer.innerHTML = outfits.map(out => {
-        return `
-          <div onclick="assignOutfitToCalendarDay('${out.id}')" class="bg-fashionGray p-3 rounded-xl border border-gray-200 hover:border-rosegold cursor-pointer active:scale-95 transition-all text-left">
-            <h4 class="text-xs font-bold text-fashionBlack leading-tight">${out.name}</h4>
-            <p class="text-[9px] text-gray-400 mt-0.5">${out.style} • ${out.season}</p>
-          </div>
-        `;
-      }).join('');
-
-      document.getElementById('modal-calendar-outfit-picker').classList.remove('hidden');
-    }
-
-    function closeCalendarOutfitPicker() {
-      document.getElementById('modal-calendar-outfit-picker').classList.add('hidden');
-    }
-
-    function assignOutfitToCalendarDay(outfitId) {
-      if (!selectedCalendarDay) return;
-      calendar[selectedCalendarDay] = outfitId;
-      StorageManager.saveCalendar(calendar);
-      
-      closeCalendarOutfitPicker();
+    // NAVIGAZIONE CALENDARIO
+    function prevMonth() {
+      state.currentDate.setMonth(state.currentDate.getMonth() - 1);
       renderCalendar();
-      selectCalendarDay(selectedCalendarDay);
-      showToast("Pianificazione salvata");
+      updateStatsMonthHeader();
     }
 
-    // ==========================================
-    // UI SUBMODULE: WISHLIST WIDGET
-    // ==========================================
-    function renderWishlist() {
-      const container = document.getElementById('wishlist-container');
-      const emptyState = document.getElementById('wishlist-empty');
+    function nextMonth() {
+      state.currentDate.setMonth(state.currentDate.getMonth() + 1);
+      renderCalendar();
+      updateStatsMonthHeader();
+    }
 
-      if (wishlist.length > 0) {
-        emptyState.classList.add('hidden');
-        container.innerHTML = wishlist.map(wish => {
-          return `
-            <div class="bg-fashionGray p-3 rounded-xl border border-gray-100 flex justify-between items-center gap-3">
-              <div class="overflow-hidden">
-                <span class="text-[8px] uppercase tracking-wider font-bold text-rosegold">${wish.category}</span>
-                <h4 class="text-xs font-semibold text-fashionBlack truncate">${wish.name}</h4>
-                ${wish.price ? `<p class="text-[10px] text-gray-500 font-semibold mt-0.5">${wish.price} €</p>` : ''}
-                ${wish.notes ? `<p class="text-[9px] text-gray-400 italic truncate mt-0.5">${wish.notes}</p>` : ''}
-              </div>
-              <div class="flex items-center gap-1.5 shrink-0">
-                <button onclick="promoteWishToArmadio('${wish.id}')" title="Sposta nell'armadio" class="bg-white p-2 rounded-lg text-green-600 hover:bg-green-50 shadow-sm transition-colors border border-gray-200">
-                  <i data-lucide="check" class="w-4 h-4"></i>
-                </button>
-                <button onclick="deleteWishlistItem('${wish.id}')" class="bg-white p-2 rounded-lg text-red-500 hover:bg-red-50 shadow-sm transition-colors border border-gray-200">
-                  <i data-lucide="trash" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
-          `;
-        }).join('');
-        lucide.createIcons();
-      } else {
-        container.innerHTML = '';
-        emptyState.classList.remove('hidden');
+    // NAVIGAZIONE STATISTICHE
+    function prevMonthStats() {
+      state.currentDate.setMonth(state.currentDate.getMonth() - 1);
+      updateStatsMonthHeader();
+      renderCalendar();
+      updateChart();
+    }
+
+    function nextMonthStats() {
+      state.currentDate.setMonth(state.currentDate.getMonth() + 1);
+      updateStatsMonthHeader();
+      renderCalendar();
+      updateChart();
+    }
+
+    function updateStatsMonthHeader() {
+      const statsMonthYearTitle = document.getElementById('stats-month-year');
+      if (statsMonthYearTitle) {
+        const year = state.currentDate.getFullYear();
+        const month = state.currentDate.getMonth();
+        statsMonthYearTitle.innerText = `${MONTHS[month]} ${year}`;
       }
     }
 
-    function openWishlistModal() {
-      document.getElementById('wishlist-form').reset();
-      document.getElementById('modal-add-wishlist').classList.remove('hidden');
+    function setStatsRange(range) {
+      state.statsRange = range;
+      
+      const btnMonth = document.getElementById('stats-range-month');
+      const btnAll = document.getElementById('stats-range-all');
+      const selectorContainer = document.getElementById('stats-month-selector-container');
+      const subtitle = document.getElementById('stats-subtitle');
+      
+      if (range === 'month') {
+        btnMonth.className = "flex-1 text-center py-2 rounded-xl text-xs font-extrabold bg-white text-purple-700 shadow-sm transition-all duration-200";
+        btnAll.className = "flex-1 text-center py-2 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-800 transition-all duration-200";
+        selectorContainer.classList.remove('hidden', 'opacity-0');
+        subtitle.innerText = "Attività completate nel mese selezionato";
+      } else {
+        btnMonth.className = "flex-1 text-center py-2 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-800 transition-all duration-200";
+        btnAll.className = "flex-1 text-center py-2 rounded-xl text-xs font-extrabold bg-white text-purple-700 shadow-sm transition-all duration-200";
+        selectorContainer.classList.add('hidden', 'opacity-0');
+        subtitle.innerText = "Riepilogo storico di tutte le attività completate";
+      }
+      
+      updateChart();
     }
 
-    function closeWishlistModal() {
-      document.getElementById('modal-add-wishlist').classList.add('hidden');
+    // GESTIONE SWIPE SU CALENDARIO
+    function setupSwipeGestures() {
+      const grid = document.getElementById('calendar-days-grid');
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      grid.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      grid.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      }, { passive: true });
+
+      function handleSwipe() {
+        const swipeDistance = touchEndX - touchStartX;
+        if (Math.abs(swipeDistance) > 60) {
+          if (swipeDistance > 0) {
+            prevMonth();
+          } else {
+            nextMonth();
+          }
+        }
+      }
     }
 
-    function saveWishlistItem(event) {
+    // DISEGNA CALENDARIO
+    function renderCalendar() {
+      const grid = document.getElementById('calendar-days-grid');
+      const monthYearTitle = document.getElementById('calendar-month-year');
+      
+      grid.innerHTML = '';
+      
+      const year = state.currentDate.getFullYear();
+      const month = state.currentDate.getMonth();
+
+      monthYearTitle.innerText = `${MONTHS[month]} ${year}`;
+
+      const firstDay = new Date(year, month, 1);
+      let startDayOffset = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+
+      const totalDays = new Date(year, month + 1, 0).getDate();
+      const prevMonthTotalDays = new Date(year, month, 0).getDate();
+
+      // Giorni mese precedente
+      for (let i = startDayOffset - 1; i >= 0; i--) {
+        const dayNum = prevMonthTotalDays - i;
+        const tempDate = new Date(year, month - 1, dayNum);
+        const dateStr = formatDateString(tempDate);
+        grid.appendChild(createDayCell(dayNum, dateStr, false));
+      }
+
+      // Giorni mese corrente
+      const todayStr = formatDateString(new Date());
+      for (let dayNum = 1; dayNum <= totalDays; dayNum++) {
+        const tempDate = new Date(year, month, dayNum);
+        const dateStr = formatDateString(tempDate);
+        const isToday = dateStr === todayStr;
+        grid.appendChild(createDayCell(dayNum, dateStr, true, isToday));
+      }
+
+      // Giorni mese successivo
+      const totalCells = grid.children.length;
+      const remainingCells = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+      for (let dayNum = 1; dayNum <= remainingCells; dayNum++) {
+        const tempDate = new Date(year, month + 1, dayNum);
+        const dateStr = formatDateString(tempDate);
+        grid.appendChild(createDayCell(dayNum, dateStr, false));
+      }
+
+      lucide.createIcons();
+    }
+
+    function formatDateString(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function createDayCell(dayNum, dateStr, isCurrentMonth, isToday = false) {
+      const cell = document.createElement('button');
+      let classes = "min-h-[64px] p-1.5 rounded-2xl flex flex-col justify-between transition-all duration-150 border active:scale-95 text-left relative ";
+      
+      if (isCurrentMonth) {
+        if (isToday) {
+          classes += "bg-gradient-to-br from-purple-400 via-purple-500 to-indigo-500 text-white font-bold border-purple-200 shadow-md shadow-purple-100 ring-2 ring-purple-200 ring-offset-1";
+        } else {
+          classes += "bg-white hover:bg-purple-50/20 text-slate-700 font-semibold border-purple-50/50 hover:border-purple-100 shadow-sm";
+        }
+      } else {
+        classes += "bg-purple-50/10 text-slate-400 border-transparent cursor-not-allowed opacity-40";
+      }
+
+      cell.className = classes;
+      
+      if (isCurrentMonth) {
+        cell.onclick = () => openDayModal(dateStr);
+      }
+
+      const daySpan = document.createElement('span');
+      daySpan.className = `text-xs ${isToday ? 'text-white' : 'text-slate-700'}`;
+      daySpan.innerText = dayNum;
+      cell.appendChild(daySpan);
+
+      const indicatorsDiv = document.createElement('div');
+      indicatorsDiv.className = "flex flex-row flex-nowrap gap-1 mt-1.5 w-full overflow-x-auto scrollbar-none justify-start items-center pb-0.5";
+      indicatorsDiv.style.scrollbarWidth = "none";
+      indicatorsDiv.style.msOverflowStyle = "none";
+
+      indicatorsDiv.addEventListener('touchstart', (e) => { e.stopPropagation(); }, { passive: true });
+      indicatorsDiv.addEventListener('touchmove', (e) => { e.stopPropagation(); }, { passive: true });
+      indicatorsDiv.addEventListener('touchend', (e) => { e.stopPropagation(); }, { passive: true });
+      indicatorsDiv.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openDayModal(dateStr);
+      });
+
+      const dayActivities = state.activities.filter(act => act.date === dateStr);
+      
+      dayActivities.forEach(act => {
+        const cat = CATEGORIES[act.category] || CATEGORIES.altro;
+        
+        if (act.completed) {
+          const outerRing = document.createElement('div');
+          outerRing.className = "w-3.5 h-3.5 rounded-full border-2 border-purple-600 bg-white flex items-center justify-center shrink-0 shadow-sm";
+          
+          const innerDot = document.createElement('div');
+          innerDot.style.backgroundColor = cat.color;
+          innerDot.className = "w-1.5 h-1.5 rounded-full shrink-0";
+          
+          outerRing.appendChild(innerDot);
+          outerRing.title = `${act.time ? act.time + ' - ' : ''}${act.title} (Completata! ✨)`;
+          indicatorsDiv.appendChild(outerRing);
+        } else {
+          const badge = document.createElement('div');
+          badge.style.backgroundColor = cat.color;
+          badge.className = `w-2.5 h-2.5 rounded-full shrink-0 shadow-sm border border-white/60`;
+          badge.title = `${act.time ? act.time + ' - ' : ''}${act.title}`;
+          indicatorsDiv.appendChild(badge);
+        }
+      });
+
+      cell.appendChild(indicatorsDiv);
+      return cell;
+    }
+
+    // CONFIGURAZIONE SELETTORI CATEGORIA
+    function setupCategorySelectors() {
+      const container = document.getElementById('category-selector');
+      container.innerHTML = '';
+
+      const uniqueCats = Object.values(CATEGORIES).filter((cat, index, self) => 
+        self.findIndex(c => c.id === cat.id) === index
+      );
+
+      uniqueCats.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.onclick = () => selectCategory(cat.id);
+        btn.id = `cat-btn-${cat.id}`;
+        
+        btn.className = `p-2.5 rounded-2xl border text-center transition flex flex-col items-center gap-1 text-xs font-semibold ${
+          state.selectedCategory === cat.id 
+            ? cat.activeClass 
+            : 'border-slate-100 bg-white text-slate-500 hover:bg-slate-50 shadow-sm'
+        }`;
+
+        btn.innerHTML = `
+          <i data-lucide="${cat.icon}" class="w-4 h-4 shrink-0" style="color: ${state.selectedCategory === cat.id ? 'inherit' : cat.color}"></i>
+          <span>${cat.label}</span>
+        `;
+        container.appendChild(btn);
+      });
+
+      const modalContainer = document.getElementById('modal-cat-selector');
+      modalContainer.innerHTML = '';
+      
+      uniqueCats.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.onclick = () => selectModalCategory(cat.id);
+        btn.id = `modal-cat-btn-${cat.id}`;
+        
+        btn.className = `shrink-0 w-[58px] p-2 rounded-xl border text-center transition flex flex-col items-center justify-center gap-0.5 snap-start ${
+          state.selectedModalCategory === cat.id 
+            ? cat.modalActiveClass 
+            : 'border-slate-100 bg-white text-slate-400 hover:bg-slate-50'
+        }`;
+
+        btn.innerHTML = `
+          <i data-lucide="${cat.icon}" class="w-3.5 h-3.5 shrink-0" style="color: ${state.selectedModalCategory === cat.id ? 'inherit' : cat.color}"></i>
+          <span class="text-[9px] font-bold tracking-tight">${cat.label}</span>
+        `;
+        modalContainer.appendChild(btn);
+      });
+    }
+
+    function selectCategory(catId) {
+      state.selectedCategory = catId;
+      setupCategorySelectors();
+      lucide.createIcons();
+    }
+
+    function selectModalCategory(catId) {
+      state.selectedModalCategory = catId;
+      setupCategorySelectors();
+      lucide.createIcons();
+    }
+
+    // LOGICA POPUP SELEZIONE EMOJI (Trasparenza lilla/fucsia extra soffice e satinata)
+    let emojiTimeout = null;
+
+    function renderHeaderEmojiDropdown() {
+      const dropdown = document.getElementById('emoji-dropdown');
+      dropdown.innerHTML = '';
+
+      EMOJI_LIST.forEach(emoji => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = "text-3xl p-0.5 hover:scale-120 transition-all duration-150 active:scale-90 text-center flex items-center justify-center focus:outline-none select-none h-10 w-10";
+        btn.innerText = emoji;
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          selectHeaderEmoji(emoji);
+        };
+        dropdown.appendChild(btn);
+      });
+
+      document.getElementById('header-emoji-btn').innerText = state.headerEmoji;
+    }
+
+    function showEmojiDropdown() {
+      if (emojiTimeout) clearTimeout(emojiTimeout);
+      const dropdown = document.getElementById('emoji-dropdown');
+      dropdown.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+      dropdown.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
+    }
+
+    function hideEmojiDropdownDelayed() {
+      if (emojiTimeout) clearTimeout(emojiTimeout);
+      emojiTimeout = setTimeout(() => {
+        hideEmojiDropdown();
+      }, 300);
+    }
+
+    function hideEmojiDropdown() {
+      const dropdown = document.getElementById('emoji-dropdown');
+      dropdown.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+      dropdown.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
+    }
+
+    function toggleEmojiDropdown(event) {
+      event.stopPropagation();
+      const dropdown = document.getElementById('emoji-dropdown');
+      const isHidden = dropdown.classList.contains('opacity-0');
+      if (isHidden) {
+        showEmojiDropdown();
+      } else {
+        hideEmojiDropdown();
+      }
+    }
+
+    function selectHeaderEmoji(emoji) {
+      state.headerEmoji = emoji;
+      document.getElementById('header-emoji-btn').innerText = emoji;
+      saveState();
+      hideEmojiDropdown();
+      showToast(`Emoji salvata! ${emoji} ✨`);
+    }
+
+    window.addEventListener('click', () => {
+      hideEmojiDropdown();
+    });
+
+    // AGGIUNTA ATTIVITÀ
+    function handleQuickAdd(event) {
       event.preventDefault();
       
-      const name = document.getElementById('wish-name').value;
-      const category = document.getElementById('wish-category').value;
-      const price = document.getElementById('wish-price').value;
-      const notes = document.getElementById('wish-notes').value;
+      const title = document.getElementById('add-title').value.trim();
+      const date = document.getElementById('add-date').value;
+      const time = document.getElementById('add-time').value;
+      const notes = document.getElementById('add-notes').value.trim();
 
-      const item = {
-        id: 'wish_' + Date.now(),
-        name, category, price, notes
+      if (!title || !date) return;
+
+      const newActivity = {
+        id: 'act_' + Date.now(),
+        title,
+        date,
+        time: time || null,
+        category: state.selectedCategory,
+        completed: false,
+        notes: notes || null
       };
 
-      wishlist.push(item);
-      StorageManager.saveWishlist(wishlist);
-      closeWishlistModal();
-      renderWishlist();
-      showToast("Aggiunto in wishlist");
+      state.activities.push(newActivity);
+      saveState();
+      showToast("Pianificata con successo! 🎉");
+
+      document.getElementById('quick-add-form').reset();
+      switchTab('calendar');
+      renderCalendar();
     }
 
-    function deleteWishlistItem(id) {
-      if (confirm("Rimuovere questo capo dalla wishlist?")) {
-        wishlist = wishlist.filter(w => w.id !== id);
-        StorageManager.saveWishlist(wishlist);
-        renderWishlist();
-        showToast("Rimosso dalla wishlist");
-      }
-    }
-
-    function promoteWishToArmadio(id) {
-      const wish = wishlist.find(w => w.id === id);
-      if (!wish) return;
-
-      const newGarment = {
-        id: 'item_' + Date.now(),
-        name: wish.name,
-        category: wish.category,
-        mainColor: 'Bianco',
-        secondaryColor: 'Nessuno',
-        brand: '',
-        material: '',
-        size: '',
-        model: '',
-        notes: wish.notes || 'Promosso da wishlist',
-        styles: ["Casual"],
-        seasons: ["Tutto l'anno"],
-        image: ''
-      };
-
-      garments.push(newGarment);
-      StorageManager.saveGarments(garments);
+    // MODAL DETTAGLIO GIORNO
+    function openDayModal(dateStr) {
+      state.selectedDateStr = dateStr;
       
-      wishlist = wishlist.filter(w => w.id !== id);
-      StorageManager.saveWishlist(wishlist);
+      const dateObj = new Date(dateStr);
+      const dayName = DAYS_OF_WEEK[dateObj.getDay()];
+      const dayNum = dateObj.getDate();
+      const monthName = MONTHS[dateObj.getMonth()];
+      const year = dateObj.getFullYear();
 
-      renderWishlist();
-      renderWardrobe();
-      updateDashboardStats();
-      showToast("Capo trasferito nel guardaroba reale!");
+      document.getElementById('modal-day-badge').innerText = dayName;
+      document.getElementById('modal-date-title').innerText = `${dayNum} ${monthName} ${year}`;
+
+      renderModalActivities();
+      closeModalAddForm();
+
+      const modal = document.getElementById('day-modal');
+      const content = document.getElementById('day-modal-content');
+      
+      modal.classList.remove('pointer-events-none', 'opacity-0');
+      modal.classList.add('opacity-100');
+      content.classList.remove('translate-y-full');
+      content.classList.add('translate-y-0');
+
+      lucide.createIcons();
     }
 
-    // ==========================================
-    // UI SUBMODULE: CUSTOM CATEGORIES
-    // ==========================================
-    function renderCustomCategories() {
-      const container = document.getElementById('custom-categories-list');
-      container.innerHTML = categories.map(cat => {
-        const isDefault = DEFAULT_CATEGORIES.includes(cat);
-        return `
-          <span class="inline-flex items-center gap-1 bg-fashionGray text-fashionBlack text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full border border-gray-100">
-            ${cat}
-            ${!isDefault ? `<button onclick="deleteCustomCategory('${cat}')" class="text-red-500 hover:text-red-700 ml-1 font-bold text-xs">×</button>` : ''}
-          </span>
+    function closeDayModal() {
+      const modal = document.getElementById('day-modal');
+      const content = document.getElementById('day-modal-content');
+      
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      content.classList.remove('translate-y-0');
+      content.classList.add('translate-y-full');
+
+      renderCalendar();
+    }
+
+    function renderModalActivities() {
+      const listContainer = document.getElementById('modal-activities-list');
+      listContainer.innerHTML = '';
+
+      const dayActivities = state.activities
+        .filter(act => act.date === state.selectedDateStr)
+        .sort((a, b) => {
+          if (!a.time) return 1;
+          if (!b.time) return -1;
+          return a.time.localeCompare(b.time);
+        });
+
+      if (dayActivities.length === 0) {
+        listContainer.innerHTML = `
+          <div class="text-center py-8 text-purple-300">
+            <span class="text-4xl block mb-2">🐒</span>
+            <p class="text-xs font-bold text-purple-900/40">Ancora niente in programma</p>
+            <p class="text-[10px] text-slate-400 mt-1">Usa il pulsante sotto per pianificare!</p>
+          </div>
         `;
-      }).join('');
-    }
-
-    function addNewCategory() {
-      const input = document.getElementById('new-category-input');
-      const val = input.value.trim();
-      if (!val) return;
-
-      if (categories.includes(val)) {
-        showToast("Questa categoria esiste già!");
         return;
       }
 
-      categories.push(val);
-      StorageManager.saveCategories(categories);
-      
-      input.value = "";
-      initFormCategories();
-      initFilterDropdowns();
-      renderCustomCategories();
-      showToast("Nuova categoria creata!");
+      dayActivities.forEach(act => {
+        const cat = CATEGORIES[act.category] || CATEGORIES.altro;
+        const actDiv = document.createElement('div');
+        actDiv.className = `p-4 rounded-2xl border transition flex items-stretch gap-3 justify-between ${
+          act.completed ? 'bg-purple-50/10 border-purple-100/30 opacity-70' : 'bg-white border-purple-50 shadow-sm'
+        }`;
+
+        actDiv.innerHTML = `
+          <div class="flex items-start gap-2.5 flex-1 min-w-0">
+            <button onclick="toggleActivityComplete('${act.id}')" class="mt-0.5 w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition ${
+              act.completed 
+                ? 'bg-purple-500 border-purple-500 text-white' 
+                : 'border-purple-100 hover:border-purple-400 bg-white text-transparent'
+            }">
+              <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            </button>
+            
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                ${act.time ? `<span class="text-xs font-extrabold bg-purple-50 text-purple-700 px-1.5 py-0.5 rounded-md flex items-center gap-1 shrink-0"><i data-lucide="clock" class="w-3 h-3 text-purple-400"></i> ${act.time}</span>` : ''}
+                <span class="text-[9px] px-2 py-0.5 font-bold uppercase tracking-wider rounded-md ${cat.bgClass}">
+                  ${cat.label}
+                </span>
+              </div>
+              <h4 class="text-sm font-bold text-slate-800 mt-1.5 break-words ${act.completed ? 'line-through text-slate-400' : ''}">
+                ${act.title}
+              </h4>
+              ${act.notes ? `<p class="text-xs text-slate-400 mt-1 italic">${act.notes}</p>` : ''}
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1 shrink-0 items-center justify-center border-l border-purple-50 pl-2">
+            <button onclick="startEditActivity('${act.id}')" class="text-emerald-500 hover:text-emerald-600 p-1 rounded-lg hover:bg-emerald-50 transition active:scale-90" title="Modifica attività">
+              <i data-lucide="pencil" class="w-4 h-4"></i>
+            </button>
+            <button onclick="deleteActivity('${act.id}')" class="text-rose-500 hover:text-rose-600 p-1 rounded-lg hover:bg-rose-50 transition active:scale-90" title="Elimina attività">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        `;
+
+        listContainer.appendChild(actDiv);
+      });
+
+      lucide.createIcons();
     }
 
-    function deleteCustomCategory(catName) {
-      if (confirm(`Rimuovere la categoria "${catName}"? I capi associati rimarranno nell'armadio.`)) {
-        categories = categories.filter(c => c !== catName);
-        StorageManager.saveCategories(categories);
-        
-        initFormCategories();
-        initFilterDropdowns();
-        renderCustomCategories();
-        showToast("Categoria rimossa");
+    function toggleActivityComplete(id) {
+      const idx = state.activities.findIndex(act => act.id === id);
+      if (idx !== -1) {
+        state.activities[idx].completed = !state.activities[idx].completed;
+        saveState();
+        renderModalActivities();
       }
     }
 
-    // ==========================================
-    // MODULE: BACKUP MANAGEMENT (JSON)
-    // ==========================================
-    function exportData() {
-      const data = {
-        garments: StorageManager.getGarments(),
-        categories: StorageManager.getCategories(),
-        outfits: StorageManager.getOutfits(),
-        calendar: StorageManager.getCalendar(),
-        wishlist: StorageManager.getWishlist()
-      };
-
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "OutfitLab_Backup_" + new Date().toISOString().slice(0,10) + ".json");
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-      showToast("File di backup scaricato con successo");
+    function deleteActivity(id) {
+      state.activities = state.activities.filter(act => act.id !== id);
+      saveState();
+      renderModalActivities();
+      showToast("Attività rimossa");
     }
 
-    function importData(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    function startEditActivity(id) {
+      const act = state.activities.find(act => act.id === id);
+      if (!act) return;
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const parsed = JSON.parse(e.target.result);
-          
-          if (parsed.garments) StorageManager.saveGarments(parsed.garments);
-          if (parsed.categories) StorageManager.saveCategories(parsed.categories);
-          if (parsed.outfits) StorageManager.saveOutfits(parsed.outfits);
-          if (parsed.calendar) StorageManager.saveCalendar(parsed.calendar);
-          if (parsed.wishlist) StorageManager.saveWishlist(parsed.wishlist);
+      state.editingActivityId = id;
 
-          garments = StorageManager.getGarments();
-          categories = StorageManager.getCategories();
-          outfits = StorageManager.getOutfits();
-          calendar = StorageManager.getCalendar();
-          wishlist = StorageManager.getWishlist();
+      document.getElementById('modal-add-title').value = act.title;
+      document.getElementById('modal-add-date').value = act.date;
+      document.getElementById('modal-add-time').value = act.time || '';
+      selectModalCategory(act.category);
 
-          initFormCategories();
-          initFilterDropdowns();
-          updateDashboardStats();
-          renderWardrobe();
-          renderWishlist();
-          renderCustomCategories();
+      document.getElementById('modal-submit-btn-text').innerText = "Salva Modifiche";
+      
+      const form = document.getElementById('modal-add-form');
+      const btn = document.getElementById('btn-toggle-modal-add');
+      
+      form.classList.remove('hidden');
+      btn.classList.add('hidden');
 
-          showToast("Ripristino dati completato correttamente!");
-          switchView('dashboard');
-        } catch (err) {
-          showToast("Formato file di backup non valido.");
-          console.error(err);
+      setTimeout(() => {
+        const modalContent = document.getElementById('day-modal-content');
+        modalContent.scrollTo({
+          top: modalContent.scrollHeight,
+          behavior: 'smooth'
+        });
+        document.getElementById('modal-add-title').focus();
+      }, 50);
+    }
+
+    function toggleModalAddForm() {
+      const form = document.getElementById('modal-add-form');
+      const btn = document.getElementById('btn-toggle-modal-add');
+      
+      if (form.classList.contains('hidden')) {
+        form.classList.remove('hidden');
+        btn.classList.add('hidden');
+        document.getElementById('modal-add-date').value = state.selectedDateStr;
+        document.getElementById('modal-add-title').focus();
+      } else {
+        closeModalAddForm();
+      }
+    }
+
+    function closeModalAddForm() {
+      const form = document.getElementById('modal-add-form');
+      const btn = document.getElementById('btn-toggle-modal-add');
+      form.classList.add('hidden');
+      btn.classList.remove('hidden');
+      form.reset();
+      
+      state.editingActivityId = null;
+      document.getElementById('modal-submit-btn-text').innerText = "Salva";
+    }
+
+    function handleModalAdd(event) {
+      event.preventDefault();
+      
+      const title = document.getElementById('modal-add-title').value.trim();
+      const date = document.getElementById('modal-add-date').value;
+      const time = document.getElementById('modal-add-time').value;
+
+      if (!title || !date) return;
+
+      if (state.editingActivityId) {
+        const idx = state.activities.findIndex(act => act.id === state.editingActivityId);
+        if (idx !== -1) {
+          state.activities[idx].title = title;
+          state.activities[idx].date = date;
+          state.activities[idx].time = time || null;
+          state.activities[idx].category = state.selectedModalCategory;
+          showToast("Attività modificata! ✨");
         }
-      };
-      reader.readAsText(file);
+      } else {
+        const newActivity = {
+          id: 'act_' + Date.now(),
+          title,
+          date: date,
+          time: time || null,
+          category: state.selectedModalCategory,
+          completed: false,
+          notes: null
+        };
+        state.activities.push(newActivity);
+        showToast("Pianificata con successo! 🎉");
+      }
+
+      saveState();
+      closeModalAddForm();
+      renderModalActivities();
+      renderCalendar();
+    }
+
+    // GRAFICI & ANALISI (STATISTICHE)
+    function updateKawaiiMascot(completedCount) {
+      const emojiEl = document.getElementById('chart-kawaii-emoji');
+      const ratioEl = document.getElementById('chart-completed-ratio');
+      
+      if (!emojiEl || !ratioEl) return;
+
+      ratioEl.innerText = `${completedCount} Completate`;
+
+      if (completedCount <= 4) {
+        emojiEl.innerText = '🫩🍂';
+      } else if (completedCount >= 5 && completedCount <= 9) {
+        emojiEl.innerText = '🙂🌱';
+      } else if (completedCount >= 10 && completedCount <= 14) {
+        emojiEl.innerText = '🤨🌿';
+      } else if (completedCount >= 15 && completedCount <= 19) {
+        emojiEl.innerText = '😌🪴';
+      } else {
+        emojiEl.innerText = '🤩🌳';
+      }
+    }
+
+    function updateChart() {
+      const containerEmptyMsg = document.getElementById('empty-chart-msg');
+      const emptyMsgText = containerEmptyMsg.querySelector('p');
+      
+      const currentYear = state.currentDate.getFullYear();
+      const currentMonth = state.currentDate.getMonth();
+      
+      let completedActivities = [];
+      if (state.statsRange === 'month') {
+        completedActivities = state.activities.filter(act => {
+          if (!act.completed) return false;
+          const parts = act.date.split('-');
+          const actYear = parseInt(parts[0], 10);
+          const actMonth = parseInt(parts[1], 10) - 1;
+          return actYear === currentYear && actMonth === currentMonth;
+        });
+        emptyMsgText.innerText = "Nessuna attività completata questo mese 🐒";
+      } else {
+        completedActivities = state.activities.filter(act => act.completed);
+        emptyMsgText.innerText = "Nessuna attività registrata come completata ✨";
+      }
+      
+      updateKawaiiMascot(completedActivities.length);
+
+      if (completedActivities.length === 0) {
+        containerEmptyMsg.classList.remove('hidden');
+        if (state.chartInstance) {
+          state.chartInstance.destroy();
+          state.chartInstance = null;
+        }
+        renderStatsBreakdown({});
+        return;
+      }
+
+      containerEmptyMsg.classList.add('hidden');
+
+      const counts = {};
+      Object.keys(CATEGORIES).forEach(key => {
+        if (key !== 'contro') counts[key] = 0;
+      });
+
+      completedActivities.forEach(act => {
+        const mappedCategory = act.category === 'contro' ? 'altro' : act.category;
+        if (counts[mappedCategory] !== undefined) {
+          counts[mappedCategory]++;
+        } else {
+          counts['altro']++;
+        }
+      });
+
+      renderStatsBreakdown(counts);
+
+      const labels = [];
+      const data = [];
+      const colors = [];
+
+      Object.entries(counts).forEach(([key, count]) => {
+        if (count > 0 && key !== 'contro') {
+          labels.push(CATEGORIES[key].label);
+          data.push(count);
+          colors.push(CATEGORIES[key].color);
+        }
+      });
+
+      if (data.length === 0) {
+        containerEmptyMsg.classList.remove('hidden');
+        if (state.chartInstance) {
+          state.chartInstance.destroy();
+          state.chartInstance = null;
+        }
+        return;
+      }
+
+      const ctx = document.getElementById('analyticsChart').getContext('2d');
+
+      if (state.chartInstance) {
+        state.chartInstance.destroy();
+      }
+
+      state.chartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: colors,
+            borderWidth: 0,
+            hoverOffset: 8,
+            borderRadius: 16,
+            spacing: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            animateScale: true,
+            animateRotate: true,
+            duration: 1500,
+            easing: 'easeOutElastic'
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: 'rgba(255, 255, 255, 0.96)',
+              titleColor: '#581c87',
+              bodyColor: '#475569',
+              borderColor: '#f3e8ff',
+              borderWidth: 1.5,
+              padding: 12,
+              cornerRadius: 16,
+              displayColors: true,
+              boxWidth: 8,
+              boxHeight: 8,
+              boxPadding: 4,
+              usePointStyle: true,
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = Math.round((value / total) * 100);
+                  return `  ${label}: ${value} completate (${percentage}%)`;
+                }
+              }
+            }
+          },
+          cutout: '78%'
+        }
+      });
+    }
+
+    function renderStatsBreakdown(counts) {
+      const breakdownContainer = document.getElementById('stats-breakdown');
+      breakdownContainer.innerHTML = '';
+
+      const totalCompleted = Object.entries(counts).reduce((acc, [key, val]) => key !== 'contro' ? acc + val : acc, 0);
+
+      if (totalCompleted === 0) {
+        breakdownContainer.innerHTML = `
+          <p class="text-xs text-slate-400 text-center py-2">Comincia a spuntare qualche attività per popolare i grafici! 🚀</p>
+        `;
+        return;
+      }
+
+      Object.entries(CATEGORIES).forEach(([key, cat]) => {
+        if (key === 'contro') return;
+        
+        const count = counts[key] || 0;
+        const percentage = totalCompleted > 0 ? Math.round((count / totalCompleted) * 100) : 0;
+
+        const row = document.createElement('div');
+        row.className = "flex items-center justify-between gap-4 py-2 border-b border-purple-50/40 last:border-0";
+        
+        row.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="w-3.5 h-3.5 rounded-full shrink-0 shadow-sm border border-white" style="background-color: ${cat.color}"></span>
+            <span class="text-xs font-bold text-slate-700">${cat.label}</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-semibold text-slate-400">${count} completate</span>
+            <span class="text-xs font-extrabold text-purple-900 w-8 text-right bg-purple-50 px-1.5 py-0.5 rounded-md">${percentage}%</span>
+          </div>
+        `;
+
+        breakdownContainer.appendChild(row);
+      });
     }
   </script>
 </body>
